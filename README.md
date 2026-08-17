@@ -1,0 +1,2 @@
+# novacore
+Automated Niche Store
