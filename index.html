@@ -2,10 +2,384 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Novacore Store</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Novacore — Premium Software & Tech Deals Plaza</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-dark: #0f172a;
+            --bg-card: #1e293b;
+            --bg-card-hover: #334155;
+            --accent-blue: #38bdf8;
+            --accent-purple: #818cf8;
+            --accent-green: #34d399;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border: #334155;
+            --radius: 16px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* Header Navigation */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 8%;
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.5px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-blue);
+        }
+
+        /* Hero Banner Section */
+        .hero {
+            text-align: center;
+            padding: 80px 20px 60px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .hero-badge {
+            background: rgba(56, 189, 248, 0.1);
+            color: var(--accent-blue);
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            padding: 6px 16px;
+            border-radius: 50px;
+            font-size: 14px;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 20px;
+        }
+
+        .hero h1 span {
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 18px;
+            color: var(--text-muted);
+            margin-bottom: 35px;
+        }
+
+        /* Search & Filter Bar */
+        .search-box {
+            max-width: 550px;
+            margin: 0 auto 40px;
+            position: relative;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 16px 24px;
+            border-radius: 50px;
+            border: 1px solid var(--border);
+            background: var(--bg-card);
+            color: #fff;
+            font-size: 16px;
+            outline: none;
+            transition: border 0.3s;
+        }
+
+        .search-box input:focus {
+            border-color: var(--accent-blue);
+        }
+
+        .categories {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 50px;
+        }
+
+        .cat-btn {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            padding: 10px 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .cat-btn.active, .cat-btn:hover {
+            background: var(--accent-blue);
+            color: #0f172a;
+            border-color: var(--accent-blue);
+        }
+
+        /* Commercial Plaza Product Grid */
+        .plaza-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 25px;
+            padding: 0 8% 80px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .product-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-6px);
+            border-color: rgba(56, 189, 248, 0.4);
+            box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5);
+        }
+
+        .card-tag {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(52, 211, 153, 0.15);
+            color: var(--accent-green);
+            padding: 4px 10px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .product-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            margin-bottom: 20px;
+        }
+
+        .product-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .product-desc {
+            color: var(--text-muted);
+            font-size: 14px;
+            margin-bottom: 20px;
+            flex-grow: 1;
+        }
+
+        .price-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .original-price {
+            text-decoration: line-through;
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        .deal-price {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--accent-green);
+        }
+
+        .btn-claim {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--accent-blue), #2563eb);
+            color: #fff;
+            font-weight: 700;
+            font-size: 15px;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            display: block;
+            transition: opacity 0.3s;
+        }
+
+        .btn-claim:hover {
+            opacity: 0.9;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            border-top: 1px solid var(--border);
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 32px; }
+            header { padding: 15px 5%; }
+            .plaza-grid { padding: 0 5% 60px; }
+        }
+    </style>
+
+    <!-- Schema Markup for SEO -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "ItemList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Novacore Automated Software Store"
+        }
+      ]
+    }
+    </script>
 </head>
 <body>
-    <h1>Welcome to Novacore</h1>
-    <p>Automated Niche Store Coming Soon!</p>
+
+    <!-- Header Navigation -->
+    <header>
+        <div class="logo">NOVACORE</div>
+        <ul class="nav-links">
+            <li><a href="#deals">Featured Deals</a></li>
+            <li><a href="#categories">Categories</a></li>
+            <li><a href="#about">About</a></li>
+        </ul>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-badge">⚡ Automated Tech & SaaS Plaza</div>
+        <h1>Discover Top Digital Assets & <span>Lifetime Deals</span></h1>
+        <p>Curated software, AI tools, and developer assets at up to 80% discount.</p>
+
+        <!-- Search Bar -->
+        <div class="search-box">
+            <input type="text" placeholder="Search software, tools, or niches...">
+        </div>
+
+        <!-- Categories -->
+        <div class="categories" id="categories">
+            <button class="cat-btn active">All Deals</button>
+            <button class="cat-btn">🤖 AI Tools</button>
+            <button class="cat-btn">💻 Web Dev</button>
+            <button class="cat-btn">🚀 Marketing</button>
+            <button class="cat-btn">☁️ Hosting</button>
+        </div>
+    </section>
+
+    <!-- Commercial Plaza Product Grid -->
+    <main class="plaza-grid" id="deals">
+
+        <!-- Product Card 1 -->
+        <div class="product-card">
+            <span class="card-tag">LIFETIME DEAL</span>
+            <div class="product-icon">🤖</div>
+            <h3 class="product-title">AI Content Generator Pro</h3>
+            <p class="product-desc">Automate your blog writing and copy generation using advanced LLM prompts with multi-language support.</p>
+            <div class="price-row">
+                <span class="original-price">$199</span>
+                <span class="deal-price">$49</span>
+            </div>
+            <a href="#" class="btn-claim">Get Lifetime Access ➔</a>
+        </div>
+
+        <!-- Product Card 2 -->
+        <div class="product-card">
+            <span class="card-tag">80% OFF</span>
+            <div class="product-icon">⚡</div>
+            <h3 class="product-title">UltraFast Cloud Hosting</h3>
+            <p class="product-desc">High-performance SSD cloud hosting with automated backup, SSL certificate, and 99.9% uptime guarantee.</p>
+            <div class="price-row">
+                <span class="original-price">$120/yr</span>
+                <span class="deal-price">$29/yr</span>
+            </div>
+            <a href="#" class="btn-claim">Claim Discount ➔</a>
+        </div>
+
+        <!-- Product Card 3 -->
+        <div class="product-card">
+            <span class="card-tag">HOT DEAL</span>
+            <div class="product-icon">📈</div>
+            <h3 class="product-title">SEO Rank Tracker & Analytics</h3>
+            <p class="product-desc">Monitor keyword rankings, search volume trends, and competitor backlink profiles in real-time.</p>
+            <div class="price-row">
+                <span class="original-price">$299</span>
+                <span class="deal-price">$69</span>
+            </div>
+            <a href="#" class="btn-claim">View Deal ➔</a>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 Novacore Commercial Plaza. All rights reserved.</p>
+        <p style="margin-top: 8px; font-size: 12px; color: #64748b;">Automated Affiliate Network Partner</p>
+    </footer>
+
 </body>
 </html>
