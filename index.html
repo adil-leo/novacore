@@ -30,7 +30,6 @@
       line-height: 1.6;
     }
 
-    /* Affiliate Disclosure Bar */
     .disclosure-bar {
       background-color: #0284c7;
       color: #ffffff;
@@ -40,14 +39,12 @@
       font-weight: 500;
     }
 
-    /* Container */
     .container {
       max-width: 1200px;
       margin: 0 auto;
       padding: 0 20px;
     }
 
-    /* Header */
     header {
       padding: 24px 0;
       border-bottom: 1px solid var(--border);
@@ -67,7 +64,6 @@
       color: var(--accent);
     }
 
-    /* Hero Section */
     .hero {
       text-align: center;
       padding: 60px 0 40px;
@@ -87,33 +83,6 @@
       margin: 0 auto 30px;
     }
 
-    /* Category Filter Pills */
-    .categories {
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-bottom: 40px;
-    }
-
-    .category-pill {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      color: var(--text-muted);
-      padding: 8px 18px;
-      border-radius: 20px;
-      font-size: 0.875rem;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-
-    .category-pill.active, .category-pill:hover {
-      border-color: var(--accent);
-      color: var(--text-main);
-      background: rgba(56, 189, 248, 0.05);
-    }
-
-    /* Deals Grid */
     .grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -203,7 +172,6 @@
       background: var(--accent-hover);
     }
 
-    /* Footer */
     footer {
       border-top: 1px solid var(--border);
       padding: 30px 0;
@@ -212,14 +180,9 @@
       font-size: 0.875rem;
     }
 
-    /* Mobile Responsive Adjustments */
     @media (max-width: 600px) {
-      .hero h1 {
-        font-size: 1.8rem;
-      }
-      .grid {
-        grid-template-columns: 1fr;
-      }
+      .hero h1 { font-size: 1.8rem; }
+      .grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -238,70 +201,40 @@
       <p>Handpicked lifetime deals and premium software discounts for creators, agencies, and startups.</p>
     </section>
 
-    <div class="categories">
-      <div class="category-pill active">All Deals</div>
-      <div class="category-pill">AI Tools</div>
-      <div class="category-pill">SaaS</div>
-      <div class="category-pill">Marketing</div>
-      <div class="category-pill">Hosting</div>
-    </div>
-
-    <main class="grid">
-      <article class="card">
-        <div>
-          <div class="card-header">
-            <span class="badge">LIFETIME DEAL</span>
-          </div>
-          <h2 class="card-title">AI Content Suite</h2>
-          <p class="card-desc">Automate your content creation pipeline with advanced multi-model AI workflows.</p>
-        </div>
-        <div class="card-footer">
-          <div>
-            <span class="price">$49</span>
-            <span class="price-old">$299</span>
-          </div>
-          <a href="#" class="btn">View Deal</a>
-        </div>
-      </article>
-
-      <article class="card">
-        <div>
-          <div class="card-header">
-            <span class="badge">85% OFF</span>
-          </div>
-          <h2 class="card-title">Cloud Analytics Pro</h2>
-          <p class="card-desc">Privacy-first web analytics built for modern SaaS applications and e-commerce.</p>
-        </div>
-        <div class="card-footer">
-          <div>
-            <span class="price">$29</span>
-            <span class="price-old">$199</span>
-          </div>
-          <a href="#" class="btn">View Deal</a>
-        </div>
-      </article>
-
-      <article class="card">
-        <div>
-          <div class="card-header">
-            <span class="badge">FEATURED</span>
-          </div>
-          <h2 class="card-title">SEO Rank Tracker</h2>
-          <p class="card-desc">Monitor keyword trends and analyze competitors in real-time with automated reporting.</p>
-        </div>
-        <div class="card-footer">
-          <div>
-            <span class="price">$39</span>
-            <span class="price-old">$149</span>
-          </div>
-          <a href="#" class="btn">View Deal</a>
-        </div>
-      </article>
-    </main>
+    <!-- Deals Grid (Loaded automatically via JS) -->
+    <main class="grid" id="deals-container"></main>
 
     <footer>
       <p>© 2026 Novacore. All rights reserved. Affiliate Network Partner.</p>
     </footer>
   </div>
+
+  <script>
+    // Fetch deals dynamically from deals.json
+    fetch('deals.json')
+      .then(response => response.json())
+      .then(deals => {
+        const container = document.getElementById('deals-container');
+        container.innerHTML = deals.map(deal => `
+          <article class="card">
+            <div>
+              <div class="card-header">
+                <span class="badge">${deal.badge}</span>
+              </div>
+              <h2 class="card-title">${deal.title}</h2>
+              <p class="card-desc">${deal.description}</p>
+            </div>
+            <div class="card-footer">
+              <div>
+                <span class="price">${deal.price}</span>
+                <span class="price-old">${deal.old_price}</span>
+              </div>
+              <a href="${deal.link}" target="_blank" rel="noopener" class="btn">View Deal</a>
+            </div>
+          </article>
+        `).join('');
+      })
+      .catch(err => console.error("Error loading deals:", err));
+  </script>
 </body>
 </html>
