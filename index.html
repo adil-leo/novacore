@@ -66,7 +66,7 @@
 
     .hero {
       text-align: center;
-      padding: 60px 0 40px;
+      padding: 50px 0 30px;
     }
 
     .hero h1 {
@@ -80,14 +80,36 @@
       color: var(--text-muted);
       font-size: 1.1rem;
       max-width: 600px;
-      margin: 0 auto 30px;
+      margin: 0 auto 24px;
+    }
+
+    /* Search Bar */
+    .search-container {
+      max-width: 480px;
+      margin: 0 auto 10px;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 12px 18px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text-main);
+      font-size: 0.95rem;
+      outline: none;
+      transition: border-color 0.2s ease;
+    }
+
+    .search-input:focus {
+      border-color: var(--accent);
     }
 
     .grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
       gap: 24px;
-      padding-bottom: 60px;
+      padding: 30px 0;
     }
 
     .card {
@@ -172,6 +194,50 @@
       background: var(--accent-hover);
     }
 
+    /* Pagination Styles */
+    .pagination {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      padding-bottom: 60px;
+    }
+
+    .page-btn {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      color: var(--text-main);
+      padding: 8px 14px;
+      border-radius: 6px;
+      font-size: 0.875rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .page-btn.active {
+      background: var(--accent);
+      color: #0f172a;
+      border-color: var(--accent);
+      font-weight: 700;
+    }
+
+    .page-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    .page-btn:hover:not(:disabled):not(.active) {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .no-results {
+      text-align: center;
+      color: var(--text-muted);
+      grid-column: 1 / -1;
+      padding: 40px 0;
+    }
+
     footer {
       border-top: 1px solid var(--border);
       padding: 30px 0;
@@ -199,10 +265,17 @@
     <section class="hero">
       <h1>Curated SaaS & Software Deals</h1>
       <p>Handpicked lifetime deals and premium software discounts for creators, agencies, and startups.</p>
+      
+      <div class="search-container">
+        <input type="text" id="search-input" class="search-input" placeholder="Search deals by software name or keyword...">
+      </div>
     </section>
 
-    <!-- Deals Grid (Loaded automatically via JS) -->
+    <!-- Deals Grid -->
     <main class="grid" id="deals-container"></main>
+
+    <!-- Page Navigation -->
+    <div class="pagination" id="pagination-container"></div>
 
     <footer>
       <p>© 2026 Novacore. All rights reserved. Affiliate Network Partner.</p>
@@ -210,31 +283,103 @@
   </div>
 
   <script>
-    // Fetch deals dynamically from deals.json
+    let allDeals = [];
+    let filteredDeals = [];
+    let currentPage = 1;
+    const itemsPerPage = 9; // Har page par 9 deals show hongi
+
+    const dealsContainer = document.getElementById('deals-container');
+    const paginationContainer = document.getElementById('pagination-container');
+    const searchInput = document.getElementById('search-input');
+
     fetch('deals.json')
       .then(response => response.json())
       .then(deals => {
-        const container = document.getElementById('deals-container');
-        container.innerHTML = deals.map(deal => `
-          <article class="card">
-            <div>
-              <div class="card-header">
-                <span class="badge">${deal.badge}</span>
-              </div>
-              <h2 class="card-title">${deal.title}</h2>
-              <p class="card-desc">${deal.description}</p>
-            </div>
-            <div class="card-footer">
-              <div>
-                <span class="price">${deal.price}</span>
-                <span class="price-old">${deal.old_price}</span>
-              </div>
-              <a href="${deal.link}" target="_blank" rel="noopener" class="btn">View Deal</a>
-            </div>
-          </article>
-        `).join('');
+        allDeals = deals;
+        filteredDeals = deals;
+        renderDeals();
       })
       .catch(err => console.error("Error loading deals:", err));
+
+    function renderDeals() {
+      dealsContainer.innerHTML = '';
+      
+      if (filteredDeals.length === 0) {
+        dealsContainer.innerHTML = '<p class="no-results">No deals found matching your search.</p>';
+        paginationContainer.innerHTML = '';
+        return;
+      }
+
+      const totalPages = Math.ceil(filteredDeals.length / itemsPerPage);
+      if (currentPage > totalPages) currentPage = totalPages;
+      if (currentPage < 1) currentPage = 1;
+
+      const startIdx = (currentPage - 1) * itemsPerPage;
+      const endIdx = startIdx + itemsPerPage;
+      const pageDeals = filteredDeals.slice(startIdx, endIdx);
+
+      dealsContainer.innerHTML = pageDeals.map(deal => `
+        <article class="card">
+          <div>
+            <div class="card-header">
+              <span class="badge">${deal.badge}</span>
+            </div>
+            <h2 class="card-title">${deal.title}</h2>
+            <p class="card-desc">${deal.description}</p>
+          </div>
+          <div class="card-footer">
+            <div>
+              <span class="price">${deal.price}</span>
+              <span class="price-old">${deal.old_price}</span>
+            </div>
+            <a href="${deal.link}" target="_blank" rel="noopener" class="btn">View Deal</a>
+          </div>
+        </article>
+      `).join('');
+
+      renderPagination(totalPages);
+    }
+
+    function renderPagination(totalPages) {
+      if (totalPages <= 1) {
+        paginationContainer.innerHTML = '';
+        return;
+      }
+
+      let paginationHTML = `
+        <button class="page-btn" ${currentPage === 1 ? 'disabled' : ''} onclick="changePage(${currentPage - 1})">Prev</button>
+      `;
+
+      for (let i = 1; i <= totalPages; i++) {
+        paginationHTML += `
+          <button class="page-btn ${i === currentPage ? 'active' : ''}" onclick="changePage(${i})">${i}</button>
+        `;
+      }
+
+      paginationHTML += `
+        <button class="page-btn" ${currentPage === totalPages ? 'disabled' : ''} onclick="changePage(${currentPage + 1})">Next</button>
+      `;
+
+      paginationContainer.innerHTML = paginationHTML;
+    }
+
+    function changePage(page) {
+      currentPage = page;
+      renderDeals();
+      window.scrollTo({ top: 250, behavior: 'smooth' });
+    }
+
+    // Live Search Filter
+    searchInput.addEventListener('input', (e) => {
+      const query = e.target.value.toLowerCase().trim();
+      filteredDeals = allDeals.filter(deal => 
+        deal.title.toLowerCase().includes(query) || 
+        deal.description.toLowerCase().includes(query) ||
+        deal.badge.toLowerCase().includes(query)
+      );
+      currentPage = 1;
+      renderDeals();
+    });
   </script>
 </body>
 </html>
