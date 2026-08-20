@@ -30,15 +30,6 @@
       line-height: 1.6;
     }
 
-    .disclosure-bar {
-      background-color: #0284c7;
-      color: #ffffff;
-      font-size: 0.825rem;
-      text-align: center;
-      padding: 6px 12px;
-      font-weight: 500;
-    }
-
     .container {
       max-width: 1200px;
       margin: 0 auto;
@@ -253,9 +244,6 @@
   </style>
 </head>
 <body>
-  <div class="disclosure-bar">
-    We may earn a commission when you buy through links on our site — at no extra cost to you.
-  </div>
 
   <div class="container">
     <header>
@@ -286,7 +274,7 @@
     let allDeals = [];
     let filteredDeals = [];
     let currentPage = 1;
-    const itemsPerPage = 9; // Har page par 9 deals show hongi
+    const itemsPerPage = 9;
 
     const dealsContainer = document.getElementById('deals-container');
     const paginationContainer = document.getElementById('pagination-container');
@@ -369,7 +357,6 @@
       window.scrollTo({ top: 250, behavior: 'smooth' });
     }
 
-    // Live Search Filter
     searchInput.addEventListener('input', (e) => {
       const query = e.target.value.toLowerCase().trim();
       filteredDeals = allDeals.filter(deal => 
