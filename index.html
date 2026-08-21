@@ -4,6 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Novacore | Curated Software & SaaS Deals</title>
+  
+  <!-- Custom Circular Favicon (Browser Tab Logo) -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='50' fill='%230b0f17'/><circle cx='50' cy='50' r='44' fill='%23151c28' stroke='%2338bdf8' stroke-width='6'/><text x='50%' y='58%' dominant-baseline='middle' text-anchor='middle' font-family='Arial, sans-serif' font-size='52' font-weight='900' fill='%2338bdf8'>N</text></svg>">
+
   <style>
     :root {
       --bg-primary: #0b0f17;
@@ -44,11 +48,29 @@
       align-items: center;
     }
 
+    /* Larger & Bolder Logo */
     .logo {
-      font-size: 1.5rem;
-      font-weight: 700;
-      letter-spacing: -0.5px;
+      font-size: 1.9rem;
+      font-weight: 800;
+      letter-spacing: -0.8px;
       color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo-icon {
+      width: 32px;
+      height: 32px;
+      background: var(--bg-card);
+      border: 2px solid var(--accent);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.95rem;
+      font-weight: 900;
+      color: var(--accent);
     }
 
     .logo span {
@@ -89,7 +111,6 @@
       margin: 0 auto 28px;
     }
 
-    /* Search Container */
     .search-container {
       max-width: 520px;
       margin: 0 auto 24px;
@@ -112,7 +133,6 @@
       box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
     }
 
-    /* Trust Stats Bar */
     .trust-bar {
       display: flex;
       justify-content: center;
@@ -124,7 +144,6 @@
       letter-spacing: 0.5px;
     }
 
-    /* Category Filter Pills */
     .categories {
       display: flex;
       justify-content: center;
@@ -151,7 +170,6 @@
       background: rgba(56, 189, 248, 0.08);
     }
 
-    /* Deals Grid */
     .grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -249,7 +267,6 @@
       background: var(--accent-hover);
     }
 
-    /* Pagination */
     .pagination {
       display: flex;
       justify-content: center;
@@ -307,7 +324,10 @@
 
   <div class="container">
     <header>
-      <div class="logo">Novacore<span>.</span></div>
+      <div class="logo">
+        <div class="logo-icon">N</div>
+        Novacore<span>.</span>
+      </div>
     </header>
 
     <section class="hero">
