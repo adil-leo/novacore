@@ -40,7 +40,7 @@
     }
 
     header {
-      padding: 24px 0;
+      padding: 20px 0;
       border-bottom: 1px solid var(--border);
       display: flex;
       justify-content: space-between;
@@ -75,7 +75,25 @@
       color: var(--accent);
     }
 
-    /* Refined Hero Section */
+    /* Submit Deal Button in Header */
+    .submit-btn {
+      background: rgba(56, 189, 248, 0.08);
+      color: var(--accent);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+
+    .submit-btn:hover {
+      background: var(--accent);
+      color: #0f172a;
+      box-shadow: 0 0 15px rgba(56, 189, 248, 0.3);
+    }
+
     .hero {
       text-align: center;
       padding: 50px 0 30px;
@@ -95,7 +113,6 @@
       pointer-events: none;
     }
 
-    /* Smaller, Sleeker & Balanced Heading */
     .hero h1 {
       font-size: 1.85rem;
       font-weight: 700;
@@ -336,6 +353,7 @@
       .hero h1 { font-size: 1.5rem; }
       .grid { grid-template-columns: 1fr; }
       .trust-bar { flex-direction: column; gap: 6px; }
+      .submit-btn { padding: 6px 12px; font-size: 0.775rem; }
     }
   </style>
 </head>
@@ -347,6 +365,7 @@
         <div class="logo-icon">N</div>
         Novacore<span>.</span>
       </div>
+      <a href="https://forms.google.com" target="_blank" rel="noopener" class="submit-btn">+ Submit Deal</a>
     </header>
 
     <section class="hero">
