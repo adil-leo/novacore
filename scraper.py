@@ -4,26 +4,32 @@ deals = [
     {
         "title": "AI Content Suite",
         "badge": "LIFETIME DEAL",
+        "category": "AI Tools",
         "description": "Automate your content creation pipeline with advanced multi-model AI workflows.",
         "price": "$49",
         "old_price": "$299",
-        "link": "https://appsumo.com"
+        "link": "https://appsumo.com",
+        "logo": "https://logo.clearbit.com/appsumo.com"
     },
     {
         "title": "Cloud Analytics Pro",
         "badge": "85% OFF",
+        "category": "SaaS",
         "description": "Privacy-first web analytics built for modern SaaS applications and e-commerce.",
         "price": "$29",
         "old_price": "$199",
-        "link": "https://partnerstack.com"
+        "link": "https://partnerstack.com",
+        "logo": "https://logo.clearbit.com/partnerstack.com"
     },
     {
         "title": "SEO Rank Tracker",
         "badge": "FEATURED",
+        "category": "Marketing",
         "description": "Monitor keyword trends and analyze competitors in real-time with automated reporting.",
         "price": "$39",
         "old_price": "$149",
-        "link": "https://impact.com"
+        "link": "https://impact.com",
+        "logo": "https://logo.clearbit.com/impact.com"
     }
 ]
 
