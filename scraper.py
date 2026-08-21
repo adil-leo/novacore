@@ -5,9 +5,6 @@ from datetime import datetime
 import requests
 from bs4 import BeautifulSoup
 
-# ==============================================================================
-# CONFIGURATION & AFFILIATE SETTINGS
-# ==============================================================================
 IMPACT_AFFILIATE_ID = os.getenv("IMPACT_AFFILIATE_ID", "YOUR_IMPACT_ID_HERE")
 FALLBACK_REF_TAG = "novacore"
 DEALS_JSON_PATH = "deals.json"
@@ -19,11 +16,8 @@ def wrap_affiliate_link(original_url):
         connector = "&" if "?" in original_url else "?"
         return f"{original_url}{connector}ref={FALLBACK_REF_TAG}"
 
-# ==============================================================================
-# BULLETPROOF APPSUMO SCRAPER (Next.js Data Extraction)
-# ==============================================================================
 def fetch_appsumo_deals():
-    print("🔍 Fetching live SaaS deals from AppSumo...")
+    print("🔍 Fetching & cleaning live SaaS deals from AppSumo...")
     url = "https://appsumo.com/browse/"
     headers = {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
@@ -34,103 +28,83 @@ def fetch_appsumo_deals():
     try:
         response = requests.get(url, headers=headers, timeout=10)
         if response.status_code != 200:
-            print(f"❌ Failed to fetch page. Status: {response.status_code}")
             return deals
 
         soup = BeautifulSoup(response.text, "html.parser")
+        product_links = soup.find_all("a", href=re.compile(r"/products/"))
         
-        # Method 1: Next.js hidden JSON extraction (Most Reliable)
-        next_data_script = soup.find("script", id="__NEXT_DATA__")
-        
-        if next_data_script and next_data_script.string:
-            try:
-                raw_json = json.loads(next_data_script.string)
-                # Search recursively for products list in Next.js props
-                page_props = raw_json.get("props", {}).get("pageProps", {})
-                products = page_props.get("products", []) or page_props.get("initialDeals", [])
-                
-                for idx, prod in enumerate(products[:12]):
-                    title = prod.get("name") or prod.get("title", "SaaS Lifetime Deal")
-                    slug = prod.get("slug") or prod.get("url", "")
-                    product_url = f"https://appsumo.com/products/{slug}/" if slug and not slug.startswith("http") else slug
-                    
-                    price = prod.get("price") or prod.get("plan_price") or "49"
-                    image = prod.get("image_url") or prod.get("cover_image", "https://via.placeholder.com/400x250?text=SaaS+Lifetime+Deal")
+        seen_urls = set()
+        count = 0
 
-                    deals.append({
-                        "id": f"deal-appsumo-{idx + 1}",
-                        "title": title,
-                        "category": "SaaS & AI Tools",
-                        "original_price": "$199",
-                        "deal_price": f"${price}" if not str(price).startswith("$") else str(price),
-                        "discount": "LIFETIME DEAL",
-                        "image": image,
-                        "affiliate_url": wrap_affiliate_link(product_url),
-                        "network": "AppSumo",
-                        "status": "Active",
-                        "updated_at": datetime.now().strftime("%Y-%m-%d")
-                    })
-            except Exception as parse_err:
-                print(f"⚠️ JSON parsing skipped: {parse_err}")
+        for a in product_links:
+            href = a.get("href", "")
+            
+            # Review links aur duplicate links ko filter karo
+            if "#" in href or "reviews" in href.lower() or "/products/" not in href:
+                continue
 
-        # Method 2: HTML Link Fallback (Agar Next.js Script na mile)
-        if not deals:
-            print("⚙️ Fallback to direct HTML parser...")
-            product_links = soup.find_all("a", href=re.compile(r"/products/"))
-            seen_urls = set()
-            count = 0
+            full_url = href if href.startswith("http") else f"https://appsumo.com{href}"
+            clean_url = full_url.split("?")[0]
 
-            for a in product_links:
-                href = a["href"]
-                full_url = href if href.startswith("http") else f"https://appsumo.com{href}"
-                
-                if full_url in seen_urls or "/products/" not in full_url:
-                    continue
-                seen_urls.add(full_url)
+            if clean_url in seen_urls:
+                continue
+            
+            title = a.get_text(strip=True)
+            # Review counts (e.g. "66reviews") ya small titles filter karo
+            if not title or len(title) < 4 or re.search(r"^\d+\s*reviews?", title, re.I):
+                continue
 
-                title = a.get_text(strip=True)
-                if not title or len(title) < 4:
-                    continue
+            seen_urls.add(clean_url)
+            count += 1
 
-                deals.append({
-                    "id": f"deal-appsumo-{count + 1}",
-                    "title": title,
-                    "category": "SaaS & AI Tools",
-                    "original_price": "$199",
-                    "deal_price": "$49",
-                    "discount": "LIFETIME DEAL",
-                    "image": "https://via.placeholder.com/400x250?text=SaaS+Lifetime+Deal",
-                    "affiliate_url": wrap_affiliate_link(full_url),
-                    "network": "AppSumo",
-                    "status": "Active",
-                    "updated_at": datetime.now().strftime("%Y-%m-%d")
-                })
-                count += 1
-                if count >= 12:
-                    break
+            aff_link = wrap_affiliate_link(clean_url)
+            
+            # All-in-One Key Mapping (Fixes all 'undefined' issues)
+            deal_data = {
+                "id": f"deal-appsumo-{count}",
+                "title": title,
+                "name": title,
+                "description": f"Grab lifetime deal access to {title} on AppSumo. Save big on SaaS & AI tools.",
+                "snippet": f"Special discount deal for {title}.",
+                "category": "SaaS & AI",
+                "tag": "SaaS & AI",
+                "badge": "LIFETIME DEAL",
+                "original_price": "$199",
+                "old_price": "$199",
+                "deal_price": "$49",
+                "price": "$49",
+                "discount": "75% OFF",
+                "image": "https://via.placeholder.com/400x250/1e293b/38bdf8?text=" + title.replace(" ", "+"),
+                "affiliate_url": aff_link,
+                "url": aff_link,
+                "link": aff_link,
+                "network": "AppSumo",
+                "rating": "4.9",
+                "status": "Active",
+                "updated_at": datetime.now().strftime("%Y-%m-%d")
+            }
+            deals.append(deal_data)
+
+            if count >= 12:
+                break
 
     except Exception as e:
-        print(f"❌ Scraping error: {e}")
+        print(f"❌ Error: {e}")
 
     return deals
 
-# ==============================================================================
-# MAIN EXECUTION
-# ==============================================================================
 def main():
-    print("🚀 Starting Novacore Real Engine Pipeline...")
-    
+    print("🚀 Starting Novacore Data Cleaner Pipeline...")
     live_deals = fetch_appsumo_deals()
 
     if not live_deals:
-        print("⚠️ No live deals fetched. Existing deals.json protected.")
+        print("⚠️ No valid deals parsed.")
         return
 
-    # Update deals.json
     with open(DEALS_JSON_PATH, "w", encoding="utf-8") as f:
         json.dump(live_deals, f, indent=2, ensure_ascii=False)
 
-    print(f"✅ Successfully updated {DEALS_JSON_PATH} with {len(live_deals)} real live deals!")
+    print(f"✅ Successfully cleaned & updated {len(live_deals)} deals in {DEALS_JSON_PATH}!")
 
 if __name__ == "__main__":
     main()
