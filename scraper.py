@@ -5,6 +5,9 @@ from datetime import datetime
 import requests
 from bs4 import BeautifulSoup
 
+# ==============================================================================
+# CONFIGURATION & AFFILIATE SETTINGS
+# ==============================================================================
 IMPACT_AFFILIATE_ID = os.getenv("IMPACT_AFFILIATE_ID", "YOUR_IMPACT_ID_HERE")
 FALLBACK_REF_TAG = "novacore"
 DEALS_JSON_PATH = "deals.json"
@@ -16,6 +19,9 @@ def wrap_affiliate_link(original_url):
         connector = "&" if "?" in original_url else "?"
         return f"{original_url}{connector}ref={FALLBACK_REF_TAG}"
 
+# ==============================================================================
+# APPSUMO SCRAPER & TITLE CLEANER
+# ==============================================================================
 def fetch_appsumo_deals():
     print("🔍 Fetching & cleaning live SaaS deals from AppSumo...")
     url = "https://appsumo.com/browse/"
@@ -39,7 +45,7 @@ def fetch_appsumo_deals():
         for a in product_links:
             href = a.get("href", "")
             
-            # Review links aur duplicate links ko filter karo
+            # Review links aur extra URLs filter karo
             if "#" in href or "reviews" in href.lower() or "/products/" not in href:
                 continue
 
@@ -49,9 +55,11 @@ def fetch_appsumo_deals():
             if clean_url in seen_urls:
                 continue
             
-            title = a.get_text(strip=True)
-            # Review counts (e.g. "66reviews") ya small titles filter karo
-            if not title or len(title) < 4 or re.search(r"^\d+\s*reviews?", title, re.I):
+            # Title clean-up: "View deal:" prefix hatane ke liye
+            raw_title = a.get_text(strip=True)
+            clean_title = raw_title.replace("View deal:", "").replace("View deal", "").strip()
+
+            if not clean_title or len(clean_title) < 3 or re.search(r"^\d+\s*reviews?", clean_title, re.I):
                 continue
 
             seen_urls.add(clean_url)
@@ -59,13 +67,12 @@ def fetch_appsumo_deals():
 
             aff_link = wrap_affiliate_link(clean_url)
             
-            # All-in-One Key Mapping (Fixes all 'undefined' issues)
             deal_data = {
                 "id": f"deal-appsumo-{count}",
-                "title": title,
-                "name": title,
-                "description": f"Grab lifetime deal access to {title} on AppSumo. Save big on SaaS & AI tools.",
-                "snippet": f"Special discount deal for {title}.",
+                "title": clean_title,
+                "name": clean_title,
+                "description": f"Grab lifetime deal access to {clean_title} on AppSumo. Save big on SaaS & AI tools.",
+                "snippet": f"Special discount deal for {clean_title}.",
                 "category": "SaaS & AI",
                 "tag": "SaaS & AI",
                 "badge": "LIFETIME DEAL",
@@ -74,7 +81,7 @@ def fetch_appsumo_deals():
                 "deal_price": "$49",
                 "price": "$49",
                 "discount": "75% OFF",
-                "image": "https://via.placeholder.com/400x250/1e293b/38bdf8?text=" + title.replace(" ", "+"),
+                "image": "https://via.placeholder.com/400x250/1e293b/38bdf8?text=" + clean_title.replace(" ", "+"),
                 "affiliate_url": aff_link,
                 "url": aff_link,
                 "link": aff_link,
@@ -93,6 +100,9 @@ def fetch_appsumo_deals():
 
     return deals
 
+# ==============================================================================
+# MAIN EXECUTION
+# ==============================================================================
 def main():
     print("🚀 Starting Novacore Data Cleaner Pipeline...")
     live_deals = fetch_appsumo_deals()
