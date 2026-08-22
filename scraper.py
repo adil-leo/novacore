@@ -27,13 +27,31 @@ def wrap_affiliate_link(original_url):
         return f"{original_url}{connector}ref={FALLBACK_REF_TAG}"
 
 # ==============================================================================
+# SMART AUTO-CATEGORIZER ENGINE
+# ==============================================================================
+def categorize_deal(title):
+    """
+    Analyzes title keywords and automatically assigns exact category tag.
+    """
+    text = title.lower()
+
+    hosting_keywords = ["host", "hosting", "domain", "vps", "server", "cloud", "wordpress", "storage", "cdn", "dns"]
+    marketing_keywords = ["seo", "marketing", "email", "social", "ads", "lead", "funnel", "crm", "analytics", "traffic", "copy", "rank", "outreach"]
+    ai_keywords = ["ai", "gpt", "bot", "generator", "writer", "prompt", "llm", "copilot", "chat", "avatar", "transcribe"]
+
+    if any(kw in text for kw in hosting_keywords):
+        return "Hosting"
+    elif any(kw in text for kw in marketing_keywords):
+        return "Marketing"
+    elif any(kw in text for kw in ai_keywords):
+        return "AI Tools"
+    else:
+        return "SaaS"
+
+# ==============================================================================
 # GOOGLE TRENDS ANALYZER ENGINE
 # ==============================================================================
 def get_google_trend_scores(tool_names):
-    """
-    Checks search interest on Google Trends for each deal title.
-    Returns a dictionary with trend scores.
-    """
     scores = {}
     if not PYTRENDS_AVAILABLE or not tool_names:
         print("⚠️ pytrends not loaded. Skipping Google Trends query.")
@@ -43,7 +61,6 @@ def get_google_trend_scores(tool_names):
         print("📈 Connecting to Google Trends API...")
         pytrends = TrendReq(hl='en-US', tz=360, timeout=(10, 25))
         
-        # Google Trends allows max 5 keywords per batch
         chunk_size = 5
         for i in range(0, len(tool_names), chunk_size):
             chunk = tool_names[i:i+chunk_size]
@@ -106,7 +123,7 @@ def fetch_appsumo_deals():
             count += 1
             raw_deals.append((clean_title, clean_url))
 
-            if count >= 12:
+            if count >= 16:  # Fetching 16 deals to ensure good category variety
                 break
 
         # Google Trends scoring for all fetched tools
@@ -116,6 +133,9 @@ def fetch_appsumo_deals():
         for idx, (title, clean_url) in enumerate(raw_deals, start=1):
             aff_link = wrap_affiliate_link(clean_url)
             score = trend_scores.get(title, 0)
+            
+            # Auto-assign smart category
+            category = categorize_deal(title)
             
             # Smart Badge allocation based on Google Trends interest
             if score > 40 or idx <= 2:
@@ -127,10 +147,10 @@ def fetch_appsumo_deals():
                 "id": f"deal-appsumo-{idx}",
                 "title": title,
                 "name": title,
-                "description": f"High demand SaaS deal: Grab lifetime access to {title} on AppSumo.",
-                "snippet": f"Trending lifetime offer for {title}.",
-                "category": "SaaS & AI",
-                "tag": "SaaS & AI",
+                "description": f"High demand {category} offer: Lifetime access to {title} on AppSumo.",
+                "snippet": f"Trending lifetime deal for {title}.",
+                "category": category,
+                "tag": category,
                 "badge": badge,
                 "trend_score": score,
                 "original_price": "$199",
@@ -158,7 +178,7 @@ def fetch_appsumo_deals():
     return deals
 
 def main():
-    print("🚀 Running Novacore Scraper with Google Trends Integration...")
+    print("🚀 Running Novacore Scraper with Smart Categorization & Trends...")
     live_deals = fetch_appsumo_deals()
 
     if not live_deals:
@@ -168,7 +188,7 @@ def main():
     with open(DEALS_JSON_PATH, "w", encoding="utf-8") as f:
         json.dump(live_deals, f, indent=2, ensure_ascii=False)
 
-    print(f"✅ Successfully exported {len(live_deals)} deals to {DEALS_JSON_PATH}!")
+    print(f"✅ Successfully exported {len(live_deals)} categorized deals to {DEALS_JSON_PATH}!")
 
 if __name__ == "__main__":
     main()
