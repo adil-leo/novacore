@@ -24,10 +24,10 @@ jobs:
     - name: Install Dependencies
       run: |
         python -m pip install --upgrade pip
-        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+        pip install requests beautifulsoup4
 
     - name: Run Deals Script
-      run: python scraper.py # (Yahan apni python file ka naam confirm kar lena)
+      run: python scraper.py
 
     - name: Commit and Push
       run: |
