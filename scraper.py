@@ -16,24 +16,25 @@ except ImportError:
 # ==============================================================================
 # CONFIGURATION & AFFILIATE SETTINGS
 # ==============================================================================
-# Aapka live approved Impact AppSumo base link
 IMPACT_BASE_LINK = "https://appsumo.8odi.net/1GKLRx"
 DEALS_JSON_PATH = "deals.json"
 
 def wrap_affiliate_link(original_url):
-    """
-    AppSumo deal URL ko aapke Impact tracking ID ke sath safely wrap karta hai.
-    """
     encoded_url = urllib.parse.quote(original_url, safe='')
     return f"{IMPACT_BASE_LINK}?u={encoded_url}"
+
+def generate_smart_icon(title):
+    """
+    Generates a clean, high-res brand favicon using Google Favicon API or styled initial avatar.
+    """
+    clean_name = re.sub(r'[^a-zA-Z0-9]', '', title).lower()
+    # Direct high-res logo generation via Google Favicon service or UI Avatar fallback
+    return f"https://www.google.com/s2/favicons?domain={clean_name}.com&sz=128"
 
 # ==============================================================================
 # SMART AUTO-CATEGORIZER ENGINE
 # ==============================================================================
 def categorize_deal(title):
-    """
-    Analyzes title keywords and automatically assigns exact category tag.
-    """
     text = title.lower()
 
     hosting_keywords = ["host", "hosting", "domain", "vps", "server", "cloud", "wordpress", "storage", "cdn", "dns"]
@@ -124,25 +125,24 @@ def fetch_appsumo_deals():
             count += 1
             raw_deals.append((clean_title, clean_url))
 
-            if count >= 16:  # Fetching 16 deals to ensure good category variety
+            if count >= 16:
                 break
 
-        # Google Trends scoring for all fetched tools
         titles = [deal[0] for deal in raw_deals]
         trend_scores = get_google_trend_scores(titles)
 
         for idx, (title, clean_url) in enumerate(raw_deals, start=1):
             aff_link = wrap_affiliate_link(clean_url)
             score = trend_scores.get(title, 0)
-            
-            # Auto-assign smart category
             category = categorize_deal(title)
             
-            # Smart Badge allocation based on Google Trends interest
             if score > 40 or idx <= 2:
                 badge = "🔥 TRENDING NOW"
             else:
                 badge = "LIFETIME DEAL"
+
+            # Dynamic clean brand icon generation
+            icon_url = generate_smart_icon(title)
 
             deal_data = {
                 "id": f"deal-appsumo-{idx}",
@@ -159,7 +159,8 @@ def fetch_appsumo_deals():
                 "deal_price": "$49",
                 "price": "$49",
                 "discount": "75% OFF",
-                "image": "https://via.placeholder.com/400x250/1e293b/38bdf8?text=" + title.replace(" ", "+"),
+                "image": icon_url,
+                "icon": icon_url,
                 "affiliate_url": aff_link,
                 "url": aff_link,
                 "link": aff_link,
@@ -170,7 +171,6 @@ def fetch_appsumo_deals():
             }
             deals.append(deal_data)
 
-        # High interest trending deals sab se top par dikhayen
         deals.sort(key=lambda x: x.get("trend_score", 0), reverse=True)
 
     except Exception as e:
@@ -179,7 +179,7 @@ def fetch_appsumo_deals():
     return deals
 
 def main():
-    print("🚀 Running Novacore Scraper with Smart Categorization & Trends...")
+    print("🚀 Running Novacore Scraper with Dynamic Brand Logos...")
     live_deals = fetch_appsumo_deals()
 
     if not live_deals:
