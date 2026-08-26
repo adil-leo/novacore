@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta name='impact-site-verification' value='7f9ca468-8c1c-4e5c-bc6f-5d0c860bb136'>
-  <meta name="google-site-verification" content="rJQM3zVnc3SqAqw-SK7iIC2qRMkvGH6I9FFndg6ZKJ0" />
+  <meta name="impact-site-verification" value="7f9ca468-8c1c-4e5c-bc6f-5d0c860bb136">
+  <meta name="google-site-verification" content="rJQM3zVnc3SqAqw-SK7iIC2qRMkvGH6I9FFndg6ZKJ0">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Novacore | Curated Software & SaaS Deals</title>
@@ -11,17 +11,17 @@
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='50' fill='%230b0f17'/><circle cx='50' cy='50' r='44' fill='%23151c28' stroke='%2338bdf8' stroke-width='6'/><text x='50%' y='58%' dominant-baseline='middle' text-anchor='middle' font-family='Arial, sans-serif' font-size='52' font-weight='900' fill='%2338bdf8'>N</text></svg>">
 
   <!-- Open Graph / Social Share Preview Tags -->
-  <meta property="og:type" content="website" />
-  <meta property="og:title" content="Novacore - Top Trending SaaS & AI Lifetime Deals" />
-  <meta property="og:description" content="Discover curated lifetime deals on SaaS and AI tools, updated daily based on Google search trends." />
-  <meta property="og:image" content="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=1200&auto=format&fit=crop" />
-  <meta property="og:url" content="https://adil-leo.github.io/novacore/" />
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Novacore - Top Trending SaaS & AI Lifetime Deals">
+  <meta property="og:description" content="Discover curated lifetime deals on SaaS and AI tools, updated daily based on Google search trends.">
+  <meta property="og:image" content="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=1200&auto=format&fit=crop">
+  <meta property="og:url" content="https://adil-leo.github.io/novacore/">
 
   <!-- Twitter Card Tags -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Novacore - SaaS Deals Powered by Google Trends" />
-  <meta name="twitter:description" content="Grab top-rated software lifetime offers before they expire." />
-  <meta name="twitter:image" content="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=1200&auto=format&fit=crop" />
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Novacore - SaaS Deals Powered by Google Trends">
+  <meta name="twitter:description" content="Grab top-rated software lifetime offers before they expire.">
+  <meta name="twitter:image" content="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=1200&auto=format&fit=crop">
 
   <!-- Google Rich Snippet Schema (JSON-LD) -->
   <script type="application/ld+json">
@@ -405,7 +405,7 @@
         <div class="logo-icon">N</div>
         Novacore<span>.</span>
       </div>
-      <a href="https://forms.google.com" target="_blank" rel="noopener" class="submit-btn">+ Submit Deal</a>
+      <a href="https://forms.google.com" target="_blank" rel="noopener noreferrer" class="submit-btn">+ Submit Deal</a>
     </header>
 
     <section class="hero">
@@ -413,7 +413,7 @@
       <p>Handpicked lifetime deals and verified software discounts for creators and startups.</p>
       
       <div class="search-container">
-        <input type="text" id="search-input" class="search-input" placeholder="Search software by name or category...">
+        <input type="text" id="search-input" class="search-input" placeholder="Search software by name or category..." aria-label="Search software">
       </div>
 
       <div class="trust-bar">
@@ -425,18 +425,18 @@
       </div>
 
       <div class="categories" id="category-container">
-        <button class="category-pill active" onclick="filterCategory('All')">All Deals</button>
-        <button class="category-pill" onclick="filterCategory('AI Tools')">AI Tools</button>
-        <button class="category-pill" onclick="filterCategory('SaaS')">SaaS</button>
-        <button class="category-pill" onclick="filterCategory('Marketing')">Marketing</button>
-        <button class="category-pill" onclick="filterCategory('Hosting')">Hosting</button>
-        <button class="category-pill" onclick="filterCategory('Apps')">Apps</button>
-        <button class="category-pill" onclick="filterCategory('Downloads')">Downloads</button>
+        <button type="button" class="category-pill active" data-category="All">All Deals</button>
+        <button type="button" class="category-pill" data-category="AI Tools">AI Tools</button>
+        <button type="button" class="category-pill" data-category="SaaS">SaaS</button>
+        <button type="button" class="category-pill" data-category="Marketing">Marketing</button>
+        <button type="button" class="category-pill" data-category="Hosting">Hosting</button>
+        <button type="button" class="category-pill" data-category="Apps">Apps</button>
+        <button type="button" class="category-pill" data-category="Downloads">Downloads</button>
       </div>
     </section>
 
     <!-- Deals Grid -->
-    <main class="grid" id="deals-container"></main>
+    <main class="grid" id="deals-container" aria-live="polite"></main>
 
     <!-- Page Navigation -->
     <div class="pagination" id="pagination-container"></div>
@@ -447,126 +447,149 @@
   </div>
 
   <script>
-    let allDeals = [];
-    let filteredDeals = [];
-    let currentPage = 1;
-    let currentCategory = 'All';
-    const itemsPerPage = 20;
+    document.addEventListener('DOMContentLoaded', () => {
+      let allDeals = [];
+      let filteredDeals = [];
+      let currentPage = 1;
+      let currentCategory = 'All';
+      const itemsPerPage = 20;
 
-    const dealsContainer = document.getElementById('deals-container');
-    const paginationContainer = document.getElementById('pagination-container');
-    const searchInput = document.getElementById('search-input');
+      const dealsContainer = document.getElementById('deals-container');
+      const paginationContainer = document.getElementById('pagination-container');
+      const searchInput = document.getElementById('search-input');
+      const categoryContainer = document.getElementById('category-container');
 
-    fetch('deals.json')
-      .then(response => response.json())
-      .then(deals => {
-        allDeals = deals;
-        applyFilters();
-      })
-      .catch(err => console.error("Error loading deals:", err));
+      // Fetch deals data safely
+      fetch('deals.json')
+        .then(response => {
+          if (!response.ok) throw new Error('Network response was not ok');
+          return response.json();
+        })
+        .then(deals => {
+          allDeals = Array.isArray(deals) ? deals : [];
+          applyFilters();
+        })
+        .catch(err => {
+          console.error("Error loading deals:", err);
+          dealsContainer.innerHTML = '<p class="no-results">Unable to load deals right now. Please check back later.</p>';
+        });
 
-    function applyFilters() {
-      const query = searchInput.value.toLowerCase().trim();
+      function applyFilters() {
+        const query = searchInput.value.toLowerCase().trim();
 
-      // Filter based on search input and selected category
-      filteredDeals = allDeals.filter(deal => {
-        const matchesSearch = (deal.title && deal.title.toLowerCase().includes(query)) || 
-                              (deal.description && deal.description.toLowerCase().includes(query)) ||
-                              (deal.badge && deal.badge.toLowerCase().includes(query));
+        filteredDeals = allDeals.filter(deal => {
+          const title = (deal.title || deal.name || '').toLowerCase();
+          const desc = (deal.description || '').toLowerCase();
+          const badge = (deal.badge || '').toLowerCase();
+          const category = (deal.category || '').toLowerCase();
 
-        const matchesCategory = currentCategory === 'All' || 
-                                (deal.category && deal.category.toLowerCase() === currentCategory.toLowerCase()) ||
-                                (deal.badge && deal.badge.toLowerCase().includes(currentCategory.toLowerCase()));
+          const matchesSearch = title.includes(query) || desc.includes(query) || badge.includes(query);
+          const matchesCategory = currentCategory === 'All' || 
+                                  category === currentCategory.toLowerCase() || 
+                                  badge.includes(currentCategory.toLowerCase());
 
-        return matchesSearch && matchesCategory;
-      });
+          return matchesSearch && matchesCategory;
+        });
 
-      currentPage = 1;
-      renderDeals();
-    }
-
-    function filterCategory(cat) {
-      currentCategory = cat;
-      document.querySelectorAll('.category-pill').forEach(btn => {
-        btn.classList.toggle('active', btn.innerText.trim() === cat || (cat === 'All' && btn.innerText.includes('All')));
-      });
-      applyFilters();
-    }
-
-    function renderDeals() {
-      dealsContainer.innerHTML = '';
-      
-      if (filteredDeals.length === 0) {
-        dealsContainer.innerHTML = '<p class="no-results">No deals found matching your criteria.</p>';
-        paginationContainer.innerHTML = '';
-        return;
+        currentPage = 1;
+        renderDeals();
       }
 
-      const totalPages = Math.ceil(filteredDeals.length / itemsPerPage);
-      if (currentPage > totalPages) currentPage = totalPages;
-      if (currentPage < 1) currentPage = 1;
+      function renderDeals() {
+        dealsContainer.innerHTML = '';
 
-      const startIdx = (currentPage - 1) * itemsPerPage;
-      const pageDeals = filteredDeals.slice(startIdx, startIdx + itemsPerPage);
+        if (filteredDeals.length === 0) {
+          dealsContainer.innerHTML = '<p class="no-results">No deals found matching your criteria.</p>';
+          paginationContainer.innerHTML = '';
+          return;
+        }
 
-      dealsContainer.innerHTML = pageDeals.map(deal => {
-        const title = deal.title || deal.name || 'SaaS';
-        const fallbackLogo = `https://ui-avatars.com/api/?name=${encodeURIComponent(title)}&background=0284c7&color=ffffff&bold=true&size=128`;
-        const logoUrl = deal.image || deal.icon || deal.logo || fallbackLogo;
-        
-        const dealLink = deal.affiliate_url || deal.url || deal.link || '#';
-        const currentPrice = deal.deal_price || deal.price || '$49';
-        const oldPrice = deal.original_price || deal.old_price || '$199';
+        const totalPages = Math.ceil(filteredDeals.length / itemsPerPage);
+        if (currentPage > totalPages) currentPage = totalPages;
+        if (currentPage < 1) currentPage = 1;
 
-        return `
-          <article class="card">
-            <div>
-              <div class="card-header">
-                <span class="badge">${deal.badge || 'LIFETIME DEAL'}</span>
-                <span class="rating">Score 4.9 / 5</span>
-              </div>
-              <div class="card-title-group">
-                <img src="${logoUrl}" alt="${title}" class="tool-logo" onerror="this.onerror=null;this.src='${fallbackLogo}';">
-                <h2 class="card-title">${title}</h2>
-              </div>
-              <p class="card-desc">${deal.description || ''}</p>
-            </div>
-            <div class="card-footer">
+        const startIdx = (currentPage - 1) * itemsPerPage;
+        const pageDeals = filteredDeals.slice(startIdx, startIdx + itemsPerPage);
+
+        dealsContainer.innerHTML = pageDeals.map(deal => {
+          const title = deal.title || deal.name || 'SaaS Tool';
+          const fallbackLogo = `https://ui-avatars.com/api/?name=${encodeURIComponent(title)}&background=0284c7&color=ffffff&bold=true&size=128`;
+          const logoUrl = deal.image || deal.icon || deal.logo || fallbackLogo;
+          const dealLink = deal.affiliate_url || deal.url || deal.link || '#';
+          const currentPrice = deal.deal_price || deal.price || '$49';
+          const oldPrice = deal.original_price || deal.old_price || '$199';
+
+          return `
+            <article class="card">
               <div>
-                <span class="price">${currentPrice}</span>
-                <span class="price-old">${oldPrice}</span>
+                <div class="card-header">
+                  <span class="badge">${deal.badge || 'LIFETIME DEAL'}</span>
+                  <span class="rating">Score ${deal.rating || '4.9'} / 5</span>
+                </div>
+                <div class="card-title-group">
+                  <img src="${logoUrl}" alt="${title}" class="tool-logo" loading="lazy" onerror="this.onerror=null;this.src='${fallbackLogo}';">
+                  <h2 class="card-title">${title}</h2>
+                </div>
+                <p class="card-desc">${deal.description || ''}</p>
               </div>
-              <a href="${dealLink}" target="_blank" rel="noopener" class="btn">View Deal</a>
-            </div>
-          </article>
-        `;
-      }).join('');
+              <div class="card-footer">
+                <div>
+                  <span class="price">${currentPrice}</span>
+                  <span class="price-old">${oldPrice}</span>
+                </div>
+                <a href="${dealLink}" target="_blank" rel="noopener noreferrer" class="btn">View Deal</a>
+              </div>
+            </article>
+          `;
+        }).join('');
 
-      renderPagination(totalPages);
-    }
-
-    function renderPagination(totalPages) {
-      if (totalPages <= 1) {
-        paginationContainer.innerHTML = '';
-        return;
+        renderPagination(totalPages);
       }
 
-      let html = `<button class="page-btn" ${currentPage === 1 ? 'disabled' : ''} onclick="changePage(${currentPage - 1})">Prev</button>`;
-      for (let i = 1; i <= totalPages; i++) {
-        html += `<button class="page-btn ${i === currentPage ? 'active' : ''}" onclick="changePage(${i})">${i}</button>`;
+      function renderPagination(totalPages) {
+        if (totalPages <= 1) {
+          paginationContainer.innerHTML = '';
+          return;
+        }
+
+        let html = `<button type="button" class="page-btn" ${currentPage === 1 ? 'disabled' : ''} data-page="${currentPage - 1}">Prev</button>`;
+        for (let i = 1; i <= totalPages; i++) {
+          html += `<button type="button" class="page-btn ${i === currentPage ? 'active' : ''}" data-page="${i}">${i}</button>`;
+        }
+        html += `<button type="button" class="page-btn" ${currentPage === totalPages ? 'disabled' : ''} data-page="${currentPage + 1}">Next</button>`;
+
+        paginationContainer.innerHTML = html;
       }
-      html += `<button class="page-btn" ${currentPage === totalPages ? 'disabled' : ''} onclick="changePage(${currentPage + 1})">Next</button>`;
 
-      paginationContainer.innerHTML = html;
-    }
+      // Category Delegation Listener
+      categoryContainer.addEventListener('click', (e) => {
+        const target = e.target.closest('.category-pill');
+        if (!target) return;
 
-    function changePage(page) {
-      currentPage = page;
-      renderDeals();
-      dealsContainer.scrollIntoView({ behavior: 'smooth' });
-    }
+        currentCategory = target.getAttribute('data-category');
+        document.querySelectorAll('.category-pill').forEach(btn => btn.classList.remove('active'));
+        target.classList.add('active');
 
-    searchInput.addEventListener('input', applyFilters);
+        applyFilters();
+      });
+
+      // Pagination Delegation Listener
+      paginationContainer.addEventListener('click', (e) => {
+        const target = e.target.closest('.page-btn');
+        if (!target || target.disabled) return;
+
+        currentPage = parseInt(target.getAttribute('data-page'), 10);
+        renderDeals();
+        dealsContainer.scrollIntoView({ behavior: 'smooth' });
+      });
+
+      // Search input debouncing
+      let debounceTimeout;
+      searchInput.addEventListener('input', () => {
+        clearTimeout(debounceTimeout);
+        debounceTimeout = setTimeout(applyFilters, 250);
+      });
+    });
   </script>
 </body>
 </html>
