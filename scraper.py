@@ -6,7 +6,6 @@ from datetime import datetime
 import requests
 from bs4 import BeautifulSoup
 
-# Google Trends pytrends module import check
 try:
     from pytrends.request import TrendReq
     PYTRENDS_AVAILABLE = True
@@ -37,7 +36,7 @@ def categorize_deal(title, description=""):
         return "SaaS"
 
 def fetch_product_details(clean_url, headers):
-    """Deep scrapes individual AppSumo deal page for exact price, image & description."""
+    """Deep scrapes individual AppSumo deal page cleanly using attrs dict."""
     details = {
         "deal_price": "$49",
         "original_price": "$199",
@@ -49,31 +48,32 @@ def fetch_product_details(clean_url, headers):
         if res.status_code == 200:
             soup = BeautifulSoup(res.text, "html.parser")
             
-            # Extract Image / Logo
-            img_tag = soup.find("img", {"alt": re.compile(r".*", re.I)}) or soup.find("meta", property="og:image")
-            if img_tag:
-                details["image"] = img_tag.get("src") or img_tag.get("content", "")
-            
-            # Extract Meta Description
-            meta_desc = soup.find("meta", name="description") or soup.find("meta", property="og:description")
-            if meta_desc:
-                details["description"] = meta_desc.get("content", "").strip()
+            # Extract Meta Description cleanly
+            meta_desc = soup.find("meta", attrs={"name": "description"}) or soup.find("meta", attrs={"property": "og:description"})
+            if meta_desc and meta_desc.get("content"):
+                details["description"] = meta_desc["content"].strip()
 
-            # Extract Prices
-            price_text = soup.get_text()
-            prices = re.findall(r"\$\d+", price_text)
-            if len(prices) >= 2:
-                details["deal_price"] = prices[0]
-                details["original_price"] = prices[1]
-            elif len(prices) == 1:
-                details["deal_price"] = prices[0]
+            # Extract Image / Og:image
+            og_img = soup.find("meta", attrs={"property": "og:image"}) or soup.find("meta", attrs={"name": "twitter:image"})
+            if og_img and og_img.get("content"):
+                details["image"] = og_img["content"]
+
+            # Extract Prices using regex patterns
+            price_matches = re.findall(r"\$\d+", soup.get_text())
+            if len(price_matches) >= 2:
+                details["deal_price"] = price_matches[0]
+                details["original_price"] = price_matches[1]
+            elif len(price_matches) == 1:
+                details["deal_price"] = price_matches[0]
+
     except Exception as e:
         print(f"⚠️ Detail fetch skipped for {clean_url}: {e}")
     
+    # Clean fallback domain logo icon
     if not details["image"]:
-        clean_title = clean_url.split("/")[-2].replace("-", " ").title()
-        details["image"] = f"https://www.google.com/s2/favicons?domain={clean_title.replace(' ', '')}.com&sz=128"
-    
+        tool_slug = clean_url.rstrip("/").split("/")[-1].replace("-", "")
+        details["image"] = f"https://www.google.com/s2/favicons?domain={tool_slug}.com&sz=128"
+
     return details
 
 def fetch_appsumo_deals():
@@ -115,7 +115,7 @@ def fetch_appsumo_deals():
             seen_urls.add(clean_url)
             raw_deals.append((clean_title, clean_url))
 
-            if len(raw_deals) >= 30:  # Barha kar 30 deals kar di hain daily
+            if len(raw_deals) >= 20:
                 break
 
         for idx, (title, clean_url) in enumerate(raw_deals, start=1):
@@ -133,10 +133,10 @@ def fetch_appsumo_deals():
                 "title": title,
                 "name": title,
                 "description": desc,
-                "snippet": desc[:100] + "..." if len(desc) > 100 else desc,
+                "snippet": desc[:110] + "..." if len(desc) > 110 else desc,
                 "category": category,
                 "tag": category,
-                "badge": "🔥 TRENDING NOW" if idx <= 5 else "LIFETIME DEAL",
+                "badge": "🔥 TRENDING NOW" if idx <= 4 else "LIFETIME DEAL",
                 "original_price": details["original_price"],
                 "old_price": details["original_price"],
                 "deal_price": details["deal_price"],
@@ -159,14 +159,13 @@ def fetch_appsumo_deals():
     return new_deals
 
 def main():
-    print("🚀 Running Novacore Scraper Engine with Database Aggregation...")
+    print("🚀 Running Novacore Scraper Engine with Clean Meta Extraction...")
     fetched_deals = fetch_appsumo_deals()
 
     if not fetched_deals:
         print("⚠️ No deals fetched.")
         return
 
-    # Database Merge Logic: Existing deals load karke update/append karega
     existing_deals = []
     if os.path.exists(DEALS_JSON_PATH):
         try:
@@ -175,10 +174,9 @@ def main():
         except Exception as e:
             print(f"⚠️ Error reading existing deals: {e}")
 
-    # Merge by unique ID
     deals_dict = {d["id"]: d for d in existing_deals}
     for d in fetched_deals:
-        deals_dict[d["id"]] = d  # Existing updates or adds new product
+        deals_dict[d["id"]] = d
 
     final_deals = list(deals_dict.values())
 
