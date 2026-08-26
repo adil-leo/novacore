@@ -457,7 +457,8 @@
     function applyFilters() {
       const query = searchInput.value.toLowerCase().trim();
 
-      filteredDeals = allDeals.filter(deal => {
+      // Filter based on search input and selected category
+      let matches = allDeals.filter(deal => {
         const matchesSearch = (deal.title && deal.title.toLowerCase().includes(query)) || 
                               (deal.description && deal.description.toLowerCase().includes(query)) ||
                               (deal.badge && deal.badge.toLowerCase().includes(query));
@@ -468,6 +469,14 @@
 
         return matchesSearch && matchesCategory;
       });
+
+      // If 'All Deals' is selected, show everything.
+      // If a specific category tab is selected without active search, limit to top 5 latest deals.
+      if (currentCategory !== 'All' && !query) {
+        filteredDeals = matches.slice(0, 5);
+      } else {
+        filteredDeals = matches;
+      }
 
       currentPage = 1;
       renderDeals();
@@ -498,7 +507,6 @@
       const pageDeals = filteredDeals.slice(startIdx, startIdx + itemsPerPage);
 
       dealsContainer.innerHTML = pageDeals.map(deal => {
-        // Multi-fallback strategy to guarantee valid image rendering
         const title = deal.title || deal.name || 'SaaS';
         const fallbackLogo = `https://ui-avatars.com/api/?name=${encodeURIComponent(title)}&background=0284c7&color=ffffff&bold=true&size=128`;
         const logoUrl = deal.image || deal.icon || deal.logo || fallbackLogo;
