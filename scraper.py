@@ -6,12 +6,6 @@ from datetime import datetime
 import requests
 from bs4 import BeautifulSoup
 
-try:
-    from pytrends.request import TrendReq
-    PYTRENDS_AVAILABLE = True
-except ImportError:
-    PYTRENDS_AVAILABLE = False
-
 IMPACT_BASE_LINK = "https://appsumo.8odi.net/1GKLRx"
 DEALS_JSON_PATH = "deals.json"
 
@@ -35,30 +29,35 @@ def categorize_deal(title, description=""):
     else:
         return "SaaS"
 
-def fetch_product_details(clean_url, headers):
-    """Deep scrapes individual AppSumo deal page cleanly using attrs dict."""
+def generate_reliable_logo(title):
+    """Generates a high-quality stylized brand logo avatar."""
+    clean_title = urllib.parse.quote(title.strip())
+    return f"https://ui-avatars.com/api/?name={clean_title}&background=0284c7&color=ffffff&bold=true&size=128"
+
+def fetch_product_details(clean_url, headers, title):
+    """Deep scrapes individual AppSumo deal page for exact price, image & description."""
     details = {
         "deal_price": "$49",
         "original_price": "$199",
         "description": "",
-        "image": ""
+        "image": generate_reliable_logo(title)
     }
     try:
         res = requests.get(clean_url, headers=headers, timeout=5)
         if res.status_code == 200:
             soup = BeautifulSoup(res.text, "html.parser")
             
-            # Extract Meta Description cleanly
+            # Extract Meta Description
             meta_desc = soup.find("meta", attrs={"name": "description"}) or soup.find("meta", attrs={"property": "og:description"})
             if meta_desc and meta_desc.get("content"):
                 details["description"] = meta_desc["content"].strip()
 
-            # Extract Image / Og:image
+            # Extract og image if present
             og_img = soup.find("meta", attrs={"property": "og:image"}) or soup.find("meta", attrs={"name": "twitter:image"})
-            if og_img and og_img.get("content"):
+            if og_img and og_img.get("content") and "placeholder" not in og_img["content"]:
                 details["image"] = og_img["content"]
 
-            # Extract Prices using regex patterns
+            # Extract Prices
             price_matches = re.findall(r"\$\d+", soup.get_text())
             if len(price_matches) >= 2:
                 details["deal_price"] = price_matches[0]
@@ -68,16 +67,11 @@ def fetch_product_details(clean_url, headers):
 
     except Exception as e:
         print(f"⚠️ Detail fetch skipped for {clean_url}: {e}")
-    
-    # Clean fallback domain logo icon
-    if not details["image"]:
-        tool_slug = clean_url.rstrip("/").split("/")[-1].replace("-", "")
-        details["image"] = f"https://www.google.com/s2/favicons?domain={tool_slug}.com&sz=128"
 
     return details
 
 def fetch_appsumo_deals():
-    print("🔍 Deep Scrape: Fetching AppSumo SaaS deals, live prices & images...")
+    print("🔍 Fetching full AppSumo catalog with prices & logo rendering...")
     url = "https://appsumo.com/browse/"
     headers = {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
@@ -115,12 +109,12 @@ def fetch_appsumo_deals():
             seen_urls.add(clean_url)
             raw_deals.append((clean_title, clean_url))
 
-            if len(raw_deals) >= 20:
+            if len(raw_deals) >= 30:
                 break
 
         for idx, (title, clean_url) in enumerate(raw_deals, start=1):
             print(f"📦 Processing [{idx}/{len(raw_deals)}]: {title}")
-            details = fetch_product_details(clean_url, headers)
+            details = fetch_product_details(clean_url, headers, title)
             aff_link = wrap_affiliate_link(clean_url)
             
             desc = details["description"] if details["description"] else f"Lifetime access offer to {title} on AppSumo."
@@ -159,31 +153,18 @@ def fetch_appsumo_deals():
     return new_deals
 
 def main():
-    print("🚀 Running Novacore Scraper Engine with Clean Meta Extraction...")
+    print("🚀 Running Novacore Scraper with Refresh Database Engine...")
     fetched_deals = fetch_appsumo_deals()
 
     if not fetched_deals:
         print("⚠️ No deals fetched.")
         return
 
-    existing_deals = []
-    if os.path.exists(DEALS_JSON_PATH):
-        try:
-            with open(DEALS_JSON_PATH, "r", encoding="utf-8") as f:
-                existing_deals = json.load(f)
-        except Exception as e:
-            print(f"⚠️ Error reading existing deals: {e}")
-
-    deals_dict = {d["id"]: d for d in existing_deals}
-    for d in fetched_deals:
-        deals_dict[d["id"]] = d
-
-    final_deals = list(deals_dict.values())
-
+    # Direct fresh JSON rewrite for instant clean display fix
     with open(DEALS_JSON_PATH, "w", encoding="utf-8") as f:
-        json.dump(final_deals, f, indent=2, ensure_ascii=False)
+        json.dump(fetched_deals, f, indent=2, ensure_ascii=False)
 
-    print(f"✅ Exported total {len(final_deals)} deals (New + Accumulated) to {DEALS_JSON_PATH}!")
+    print(f"✅ Successfully exported {len(fetched_deals)} fully updated deals to {DEALS_JSON_PATH}!")
 
 if __name__ == "__main__":
     main()
