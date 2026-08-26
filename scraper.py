@@ -16,9 +16,12 @@ def wrap_affiliate_link(original_url):
 def categorize_deal(title, description=""):
     text = f"{title} {description}".lower()
 
-    hosting_keywords = ["host", "hosting", "domain", "vps", "server", "cloud", "wordpress", "storage", "cdn", "dns"]
+    # Enhanced category key phrases based on AppSumo product types
+    ai_keywords = ["ai", "gpt", "bot", "generator", "writer", "prompt", "llm", "copilot", "chat", "avatar", "transcribe", "voice"]
     marketing_keywords = ["seo", "marketing", "email", "social", "ads", "lead", "funnel", "crm", "analytics", "traffic", "copy", "rank", "outreach"]
-    ai_keywords = ["ai", "gpt", "bot", "generator", "writer", "prompt", "llm", "copilot", "chat", "avatar", "transcribe"]
+    hosting_keywords = ["host", "hosting", "domain", "vps", "server", "cloud", "wordpress", "storage", "cdn", "dns"]
+    apps_keywords = ["app", "desktop", "mobile", "ios", "android", "windows", "mac", "extension", "plugin", "software tool"]
+    downloads_keywords = ["template", "course", "ebook", "pdf", "guide", "vector", "graphic", "asset", "notion", "audio", "font", "bundle"]
 
     if any(kw in text for kw in ai_keywords):
         return "AI Tools"
@@ -26,6 +29,10 @@ def categorize_deal(title, description=""):
         return "Marketing"
     elif any(kw in text for kw in hosting_keywords):
         return "Hosting"
+    elif any(kw in text for kw in downloads_keywords):
+        return "Downloads"
+    elif any(kw in text for kw in apps_keywords):
+        return "Apps"
     else:
         return "SaaS"
 
@@ -109,7 +116,7 @@ def fetch_appsumo_deals():
             seen_urls.add(clean_url)
             raw_deals.append((clean_title, clean_url))
 
-            if len(raw_deals) >= 30:
+            if len(raw_deals) >= 40:
                 break
 
         for idx, (title, clean_url) in enumerate(raw_deals, start=1):
