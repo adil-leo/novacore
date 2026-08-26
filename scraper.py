@@ -1,6 +1,7 @@
 import json
 import os
 import re
+import urllib.parse
 from datetime import datetime
 import requests
 from bs4 import BeautifulSoup
@@ -15,16 +16,16 @@ except ImportError:
 # ==============================================================================
 # CONFIGURATION & AFFILIATE SETTINGS
 # ==============================================================================
-IMPACT_AFFILIATE_ID = os.getenv("IMPACT_AFFILIATE_ID", "YOUR_IMPACT_ID_HERE")
-FALLBACK_REF_TAG = "novacore"
+# Aapka live approved Impact AppSumo base link
+IMPACT_BASE_LINK = "https://appsumo.8odi.net/1GKLRx"
 DEALS_JSON_PATH = "deals.json"
 
 def wrap_affiliate_link(original_url):
-    if IMPACT_AFFILIATE_ID != "YOUR_IMPACT_ID_HERE":
-        return f"https://appsumo.8357.net/c/{IMPACT_AFFILIATE_ID}/1/appsumo?u={original_url}"
-    else:
-        connector = "&" if "?" in original_url else "?"
-        return f"{original_url}{connector}ref={FALLBACK_REF_TAG}"
+    """
+    AppSumo deal URL ko aapke Impact tracking ID ke sath safely wrap karta hai.
+    """
+    encoded_url = urllib.parse.quote(original_url, safe='')
+    return f"{IMPACT_BASE_LINK}?u={encoded_url}"
 
 # ==============================================================================
 # SMART AUTO-CATEGORIZER ENGINE
