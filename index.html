@@ -220,8 +220,8 @@
 
     .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 24px;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 20px;
       padding-bottom: 40px;
     }
 
@@ -229,7 +229,7 @@
       background: var(--bg-card);
       border: 1px solid var(--border);
       border-radius: 12px;
-      padding: 24px;
+      padding: 20px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -246,22 +246,22 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
     }
 
     .badge {
       background: var(--badge-bg);
       color: var(--badge-text);
-      font-size: 0.725rem;
+      font-size: 0.7rem;
       font-weight: 700;
-      padding: 4px 10px;
+      padding: 4px 8px;
       border-radius: 6px;
       border: 1px solid rgba(56, 189, 248, 0.2);
       letter-spacing: 0.5px;
     }
 
     .rating {
-      font-size: 0.775rem;
+      font-size: 0.75rem;
       color: var(--text-muted);
       font-weight: 600;
     }
@@ -269,13 +269,13 @@
     .card-title-group {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
       margin-bottom: 10px;
     }
 
     .tool-logo {
-      width: 40px;
-      height: 40px;
+      width: 36px;
+      height: 36px;
       border-radius: 8px;
       background: #0b0f17;
       border: 1px solid var(--border);
@@ -285,7 +285,7 @@
     }
 
     .card-title {
-      font-size: 1.2rem;
+      font-size: 1.1rem;
       font-weight: 700;
       margin-bottom: 0;
       line-height: 1.2;
@@ -293,8 +293,12 @@
 
     .card-desc {
       color: var(--text-muted);
-      font-size: 0.9rem;
-      margin-bottom: 24px;
+      font-size: 0.85rem;
+      margin-bottom: 20px;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
     }
 
     .card-footer {
@@ -302,30 +306,30 @@
       align-items: center;
       justify-content: space-between;
       margin-top: auto;
-      padding-top: 18px;
+      padding-top: 14px;
       border-top: 1px solid var(--border);
     }
 
     .price {
-      font-size: 1.2rem;
+      font-size: 1.1rem;
       font-weight: 700;
       color: var(--text-main);
     }
 
     .price-old {
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       color: var(--text-muted);
       text-decoration: line-through;
-      margin-left: 6px;
+      margin-left: 4px;
     }
 
     .btn {
       background: var(--accent);
       color: #0f172a;
-      padding: 9px 18px;
+      padding: 8px 14px;
       border-radius: 8px;
       font-weight: 600;
-      font-size: 0.875rem;
+      font-size: 0.825rem;
       text-decoration: none;
       transition: background 0.2s ease;
     }
@@ -340,6 +344,7 @@
       align-items: center;
       gap: 8px;
       padding-bottom: 60px;
+      flex-wrap: wrap;
     }
 
     .page-btn {
@@ -378,6 +383,10 @@
       text-align: center;
       color: var(--text-muted);
       font-size: 0.875rem;
+    }
+
+    @media (max-width: 1024px) {
+      .grid { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
     }
 
     @media (max-width: 600px) {
@@ -442,7 +451,7 @@
     let filteredDeals = [];
     let currentPage = 1;
     let currentCategory = 'All';
-    const itemsPerPage = 9;
+    const itemsPerPage = 20;
 
     const dealsContainer = document.getElementById('deals-container');
     const paginationContainer = document.getElementById('pagination-container');
@@ -460,7 +469,7 @@
       const query = searchInput.value.toLowerCase().trim();
 
       // Filter based on search input and selected category
-      let matches = allDeals.filter(deal => {
+      filteredDeals = allDeals.filter(deal => {
         const matchesSearch = (deal.title && deal.title.toLowerCase().includes(query)) || 
                               (deal.description && deal.description.toLowerCase().includes(query)) ||
                               (deal.badge && deal.badge.toLowerCase().includes(query));
@@ -471,14 +480,6 @@
 
         return matchesSearch && matchesCategory;
       });
-
-      // If 'All Deals' is selected, show everything.
-      // If a specific category tab is selected without active search, limit to top 5 latest deals.
-      if (currentCategory !== 'All' && !query) {
-        filteredDeals = matches.slice(0, 5);
-      } else {
-        filteredDeals = matches;
-      }
 
       currentPage = 1;
       renderDeals();
@@ -562,7 +563,7 @@
     function changePage(page) {
       currentPage = page;
       renderDeals();
-      window.scrollTo({ top: 250, behavior: 'smooth' });
+      dealsContainer.scrollIntoView({ behavior: 'smooth' });
     }
 
     searchInput.addEventListener('input', applyFilters);
