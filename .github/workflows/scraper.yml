@@ -2,7 +2,7 @@ name: Daily Deals Auto Scraper
 
 on:
   schedule:
-    - cron: '0 0 * * *' # Daily automatic run
+    - cron: '25 1 * * *' # Daily automatic run
   workflow_dispatch: # Manual run button
 
 permissions:
