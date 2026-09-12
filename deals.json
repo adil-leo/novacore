@@ -43,7 +43,7 @@
     "network": "AppSumo",
     "rating": "4.9",
     "status": "Active",
-    "updated_at": "2026-09-11"
+    "updated_at": "2026-09-12"
   },
   {
     "id": "deal-appsumo-fridaycode",
@@ -54,8 +54,8 @@
     "category": "Apps",
     "tag": "Apps",
     "badge": "🔥 TRENDING NOW",
-    "original_price": "$299",
-    "old_price": "$299",
+    "original_price": "$300",
+    "old_price": "$300",
     "deal_price": "$139",
     "price": "$139",
     "image": "https://appsumo2-cdn.appsumo.com/media/deals/images/friday-code-as-Header-Friday_Code-16_9.png",
@@ -66,7 +66,7 @@
     "network": "AppSumo",
     "rating": "4.9",
     "status": "Active",
-    "updated_at": "2026-09-11"
+    "updated_at": "2026-09-12"
   },
   {
     "id": "deal-appsumo-toughtongueai",
@@ -307,8 +307,8 @@
     "category": "AI Tools",
     "tag": "AI Tools",
     "badge": "LIFETIME DEAL",
-    "original_price": "$1",
-    "old_price": "$1",
+    "original_price": "$912",
+    "old_price": "$912",
     "deal_price": "$69",
     "price": "$69",
     "image": "https://appsumo2-cdn.appsumo.com/media/deals/images/as-Header-ZeroRank_AI-16_9_uuid_8739b584-adb8-424b-b656-830996ae21ab.png",
@@ -319,7 +319,7 @@
     "network": "AppSumo",
     "rating": "4.9",
     "status": "Active",
-    "updated_at": "2026-09-11"
+    "updated_at": "2026-09-12"
   },
   {
     "id": "deal-appsumo-selldone",
@@ -353,8 +353,8 @@
     "category": "AI Tools",
     "tag": "AI Tools",
     "badge": "🔥 TRENDING NOW",
-    "original_price": "$72",
-    "old_price": "$72",
+    "original_price": "$90",
+    "old_price": "$90",
     "deal_price": "$49",
     "price": "$49",
     "image": "https://appsumo2-cdn.appsumo.com/media/deals/images/vocallab-ai-as-Header-Vocallab_AI-16_9_uuid_5f84d429-c305-43bc-bfa9-f55b41983a5d.png",
@@ -365,7 +365,7 @@
     "network": "AppSumo",
     "rating": "4.9",
     "status": "Active",
-    "updated_at": "2026-09-11"
+    "updated_at": "2026-09-12"
   },
   {
     "id": "deal-appsumo-genpage",
@@ -434,7 +434,7 @@
     "network": "AppSumo",
     "rating": "4.9",
     "status": "Active",
-    "updated_at": "2026-09-11"
+    "updated_at": "2026-09-12"
   },
   {
     "id": "deal-appsumo-vexp",
@@ -467,9 +467,9 @@
     "snippet": "Your AI-powered assistant for navigating professional conversations with confidence. Discover the best deal fo...",
     "category": "AI Tools",
     "tag": "AI Tools",
-    "badge": "LIFETIME DEAL",
-    "original_price": "$299",
-    "old_price": "$299",
+    "badge": "🔥 TRENDING NOW",
+    "original_price": "$1",
+    "old_price": "$1",
     "deal_price": "$179",
     "price": "$179",
     "image": "https://appsumo2-cdn.appsumo.com/media/deals/images/hedy-promo-image-automatic-insights-1.jpeg",
@@ -480,7 +480,7 @@
     "network": "AppSumo",
     "rating": "4.9",
     "status": "Active",
-    "updated_at": "2026-09-11"
+    "updated_at": "2026-09-12"
   },
   {
     "id": "deal-appsumo-assistloop",
@@ -526,7 +526,7 @@
     "network": "AppSumo",
     "rating": "4.9",
     "status": "Active",
-    "updated_at": "2026-09-11"
+    "updated_at": "2026-09-12"
   },
   {
     "id": "deal-appsumo-vanchat",
@@ -549,7 +549,7 @@
     "network": "AppSumo",
     "rating": "4.9",
     "status": "Active",
-    "updated_at": "2026-09-11"
+    "updated_at": "2026-09-12"
   },
   {
     "id": "deal-appsumo-release0",
@@ -618,7 +618,7 @@
     "network": "AppSumo",
     "rating": "4.9",
     "status": "Active",
-    "updated_at": "2026-09-11"
+    "updated_at": "2026-09-12"
   },
   {
     "id": "deal-appsumo-keyshiftai",
@@ -664,7 +664,7 @@
     "network": "AppSumo",
     "rating": "4.9",
     "status": "Active",
-    "updated_at": "2026-09-11"
+    "updated_at": "2026-09-12"
   },
   {
     "id": "deal-appsumo-zylviehighconvertingcheckoutsoftware",
@@ -687,7 +687,7 @@
     "network": "AppSumo",
     "rating": "4.9",
     "status": "Active",
-    "updated_at": "2026-09-11"
+    "updated_at": "2026-09-12"
   },
   {
     "id": "deal-appsumo-enistonknowledgebases",
@@ -710,7 +710,7 @@
     "network": "AppSumo",
     "rating": "4.9",
     "status": "Active",
-    "updated_at": "2026-09-11"
+    "updated_at": "2026-09-12"
   },
   {
     "id": "deal-appsumo-suitedash",
@@ -756,7 +756,7 @@
     "network": "AppSumo",
     "rating": "4.9",
     "status": "Active",
-    "updated_at": "2026-09-11"
+    "updated_at": "2026-09-12"
   },
   {
     "id": "deal-appsumo-vidpenguin2",
@@ -779,7 +779,7 @@
     "network": "AppSumo",
     "rating": "4.9",
     "status": "Active",
-    "updated_at": "2026-09-11"
+    "updated_at": "2026-09-12"
   },
   {
     "id": "deal-appsumo-agencypro",
@@ -848,7 +848,7 @@
     "network": "AppSumo",
     "rating": "4.9",
     "status": "Active",
-    "updated_at": "2026-09-11"
+    "updated_at": "2026-09-12"
   },
   {
     "id": "deal-appsumo-sendfox",
@@ -859,8 +859,8 @@
     "category": "Marketing",
     "tag": "Marketing",
     "badge": "🔥 TRENDING NOW",
-    "original_price": "$480",
-    "old_price": "$480",
+    "original_price": "$156",
+    "old_price": "$156",
     "deal_price": "$29",
     "price": "$29",
     "image": "https://appsumo2-cdn.appsumo.com/media/deals/images/as-web-sendfox_ISOytAA_uuid_1a19fc2b-a899-47a7-8d05-8ba972f7a58a.png",
@@ -871,7 +871,7 @@
     "network": "AppSumo",
     "rating": "4.9",
     "status": "Active",
-    "updated_at": "2026-09-11"
+    "updated_at": "2026-09-12"
   },
   {
     "id": "deal-appsumo-reoonemailverifier",
@@ -894,7 +894,7 @@
     "network": "AppSumo",
     "rating": "4.9",
     "status": "Active",
-    "updated_at": "2026-09-11"
+    "updated_at": "2026-09-12"
   },
   {
     "id": "deal-appsumo-mystrika",
@@ -917,7 +917,7 @@
     "network": "AppSumo",
     "rating": "4.9",
     "status": "Active",
-    "updated_at": "2026-09-11"
+    "updated_at": "2026-09-12"
   },
   {
     "id": "deal-appsumo-salesblink",
@@ -928,8 +928,8 @@
     "category": "Marketing",
     "tag": "Marketing",
     "badge": "LIFETIME DEAL",
-    "original_price": "$600",
-    "old_price": "$600",
+    "original_price": "$108",
+    "old_price": "$108",
     "deal_price": "$79",
     "price": "$79",
     "image": "https://appsumo2-cdn.appsumo.com/media/deals/images/as-web-SalesBlink_-_16_9_uuid_499c1088-1c12-46d7-90cb-f007982c3653.png",
@@ -940,7 +940,7 @@
     "network": "AppSumo",
     "rating": "4.9",
     "status": "Active",
-    "updated_at": "2026-09-11"
+    "updated_at": "2026-09-12"
   },
   {
     "id": "deal-appsumo-inbox",
@@ -986,7 +986,7 @@
     "network": "AppSumo",
     "rating": "4.9",
     "status": "Active",
-    "updated_at": "2026-09-11"
+    "updated_at": "2026-09-12"
   },
   {
     "id": "deal-appsumo-wpautoblog",
@@ -1032,7 +1032,7 @@
     "network": "AppSumo",
     "rating": "4.9",
     "status": "Active",
-    "updated_at": "2026-09-11"
+    "updated_at": "2026-09-12"
   },
   {
     "id": "deal-appsumo-nichesss",
@@ -1066,8 +1066,8 @@
     "category": "Hosting",
     "tag": "Hosting",
     "badge": "🔥 TRENDING NOW",
-    "original_price": "$349",
-    "old_price": "$349",
+    "original_price": "$240",
+    "old_price": "$240",
     "deal_price": "$99",
     "price": "$99",
     "image": "https://appsumo2-cdn.appsumo.com/media/deals/images/as-web-Viloud_uuid_2f50aa54-c61e-4cb4-9c86-51bb3a8e979b.png",
@@ -1078,7 +1078,7 @@
     "network": "AppSumo",
     "rating": "4.9",
     "status": "Active",
-    "updated_at": "2026-09-11"
+    "updated_at": "2026-09-12"
   },
   {
     "id": "deal-appsumo-killerplayer",
@@ -1101,7 +1101,7 @@
     "network": "AppSumo",
     "rating": "4.9",
     "status": "Active",
-    "updated_at": "2026-09-11"
+    "updated_at": "2026-09-12"
   },
   {
     "id": "deal-appsumo-sharemyimagevideoimagehostingwithfastsharingsecurestorage",
@@ -1124,7 +1124,7 @@
     "network": "AppSumo",
     "rating": "4.9",
     "status": "Active",
-    "updated_at": "2026-09-11"
+    "updated_at": "2026-09-12"
   },
   {
     "id": "deal-appsumo-wpvideomagic",
@@ -1147,7 +1147,7 @@
     "network": "AppSumo",
     "rating": "4.9",
     "status": "Active",
-    "updated_at": "2026-09-11"
+    "updated_at": "2026-09-12"
   },
   {
     "id": "deal-appsumo-peekshot",
@@ -1170,7 +1170,7 @@
     "network": "AppSumo",
     "rating": "4.9",
     "status": "Active",
-    "updated_at": "2026-09-11"
+    "updated_at": "2026-09-12"
   },
   {
     "id": "deal-appsumo-webinar",
@@ -1193,7 +1193,7 @@
     "network": "AppSumo",
     "rating": "4.9",
     "status": "Active",
-    "updated_at": "2026-09-11"
+    "updated_at": "2026-09-12"
   },
   {
     "id": "deal-appsumo-onlinecoursehostcom",
@@ -1216,7 +1216,7 @@
     "network": "AppSumo",
     "rating": "4.9",
     "status": "Active",
-    "updated_at": "2026-09-11"
+    "updated_at": "2026-09-12"
   },
   {
     "id": "deal-appsumo-honeybill",
@@ -1239,7 +1239,7 @@
     "network": "AppSumo",
     "rating": "4.9",
     "status": "Active",
-    "updated_at": "2026-09-10"
+    "updated_at": "2026-09-12"
   },
   {
     "id": "deal-appsumo-fluxbuilder",
@@ -1308,7 +1308,7 @@
     "network": "AppSumo",
     "rating": "4.9",
     "status": "Active",
-    "updated_at": "2026-09-11"
+    "updated_at": "2026-09-12"
   },
   {
     "id": "deal-appsumo-nocodebackend",
@@ -1319,8 +1319,8 @@
     "category": "Apps",
     "tag": "Apps",
     "badge": "LIFETIME DEAL",
-    "original_price": "$688",
-    "old_price": "$688",
+    "original_price": "$120",
+    "old_price": "$120",
     "deal_price": "$79",
     "price": "$79",
     "image": "https://appsumo2-cdn.appsumo.com/media/deals/images/ncbh.png",
@@ -1331,7 +1331,7 @@
     "network": "AppSumo",
     "rating": "4.9",
     "status": "Active",
-    "updated_at": "2026-09-11"
+    "updated_at": "2026-09-12"
   },
   {
     "id": "deal-appsumo-formrobin",
@@ -1354,7 +1354,7 @@
     "network": "AppSumo",
     "rating": "4.9",
     "status": "Active",
-    "updated_at": "2026-09-11"
+    "updated_at": "2026-09-12"
   },
   {
     "id": "deal-appsumo-metasurveyplusexclusive",
@@ -1423,7 +1423,7 @@
     "network": "AppSumo",
     "rating": "4.9",
     "status": "Active",
-    "updated_at": "2026-09-11"
+    "updated_at": "2026-09-12"
   },
   {
     "id": "deal-appsumo-metasurveysurveyquizform",
@@ -1469,7 +1469,7 @@
     "network": "AppSumo",
     "rating": "4.9",
     "status": "Active",
-    "updated_at": "2026-09-11"
+    "updated_at": "2026-09-12"
   },
   {
     "id": "deal-appsumo-graphuepresentationtemplates",
@@ -1492,7 +1492,7 @@
     "network": "AppSumo",
     "rating": "4.9",
     "status": "Active",
-    "updated_at": "2026-09-11"
+    "updated_at": "2026-09-12"
   },
   {
     "id": "deal-appsumo-coachescoursecreatorscanvatemplatebundle",
@@ -1515,7 +1515,7 @@
     "network": "AppSumo",
     "rating": "4.9",
     "status": "Active",
-    "updated_at": "2026-09-11"
+    "updated_at": "2026-09-12"
   },
   {
     "id": "deal-appsumo-4340originaluniquesocialmediaquotestemplates",
@@ -1538,7 +1538,7 @@
     "network": "AppSumo",
     "rating": "4.9",
     "status": "Active",
-    "updated_at": "2026-09-11"
+    "updated_at": "2026-09-12"
   },
   {
     "id": "deal-appsumo-docpro",
@@ -1584,7 +1584,7 @@
     "network": "AppSumo",
     "rating": "4.9",
     "status": "Active",
-    "updated_at": "2026-09-11"
+    "updated_at": "2026-09-12"
   },
   {
     "id": "deal-appsumo-socialslidessocialmediatemplatesforpowerpointcanva",
@@ -1607,7 +1607,7 @@
     "network": "AppSumo",
     "rating": "4.9",
     "status": "Active",
-    "updated_at": "2026-09-11"
+    "updated_at": "2026-09-12"
   },
   {
     "id": "deal-appsumo-aliabdaalsparttimeyoutuberacademypdftemplates",
@@ -1630,7 +1630,7 @@
     "network": "AppSumo",
     "rating": "4.9",
     "status": "Active",
-    "updated_at": "2026-09-11"
+    "updated_at": "2026-09-12"
   },
   {
     "id": "deal-appsumo-candyicons",
@@ -1676,7 +1676,7 @@
     "network": "AppSumo",
     "rating": "4.9",
     "status": "Active",
-    "updated_at": "2026-09-11"
+    "updated_at": "2026-09-12"
   },
   {
     "id": "deal-appsumo-dashformplusexclusive",
@@ -1722,7 +1722,7 @@
     "network": "AppSumo",
     "rating": "4.9",
     "status": "Active",
-    "updated_at": "2026-09-11"
+    "updated_at": "2026-09-12"
   },
   {
     "id": "deal-appsumo-pagedone",
@@ -1745,7 +1745,7 @@
     "network": "AppSumo",
     "rating": "4.9",
     "status": "Active",
-    "updated_at": "2026-09-11"
+    "updated_at": "2026-09-12"
   },
   {
     "id": "deal-appsumo-saywhatemailtemplatesforfreelancersinstickysituations",
@@ -1768,7 +1768,7 @@
     "network": "AppSumo",
     "rating": "4.9",
     "status": "Active",
-    "updated_at": "2026-09-11"
+    "updated_at": "2026-09-12"
   },
   {
     "id": "deal-appsumo-notionagencykit",
@@ -1929,7 +1929,7 @@
     "network": "AppSumo",
     "rating": "4.9",
     "status": "Active",
-    "updated_at": "2026-08-30"
+    "updated_at": "2026-09-12"
   },
   {
     "id": "deal-appsumo-backgroundcutaibackgroundremover",
@@ -1998,7 +1998,7 @@
     "network": "AppSumo",
     "rating": "4.9",
     "status": "Active",
-    "updated_at": "2026-09-11"
+    "updated_at": "2026-09-12"
   },
   {
     "id": "deal-appsumo-formlyformssurveysquizzes",
@@ -2136,7 +2136,7 @@
     "network": "AppSumo",
     "rating": "4.9",
     "status": "Active",
-    "updated_at": "2026-09-10"
+    "updated_at": "2026-09-12"
   },
   {
     "id": "deal-appsumo-scribeist",
@@ -2182,7 +2182,7 @@
     "network": "AppSumo",
     "rating": "4.9",
     "status": "Active",
-    "updated_at": "2026-09-11"
+    "updated_at": "2026-09-12"
   },
   {
     "id": "deal-appsumo-plugthisai",
@@ -2193,8 +2193,8 @@
     "category": "Apps",
     "tag": "Apps",
     "badge": "🔥 TRENDING NOW",
-    "original_price": "$129",
-    "old_price": "$129",
+    "original_price": "$120",
+    "old_price": "$120",
     "deal_price": "$39",
     "price": "$39",
     "image": "https://appsumo2-cdn.appsumo.com/media/deals/images/as-Header-PlugThis_AI-16_9_uuid_3fc24a90-1a33-44fe-a4e6-dadcdfdeb8b3.png",
@@ -2205,7 +2205,7 @@
     "network": "AppSumo",
     "rating": "4.9",
     "status": "Active",
-    "updated_at": "2026-09-11"
+    "updated_at": "2026-09-12"
   },
   {
     "id": "deal-appsumo-rtilax",
@@ -2228,7 +2228,7 @@
     "network": "AppSumo",
     "rating": "4.9",
     "status": "Active",
-    "updated_at": "2026-09-11"
+    "updated_at": "2026-09-12"
   },
   {
     "id": "deal-appsumo-hyprcore",
@@ -2274,7 +2274,7 @@
     "network": "AppSumo",
     "rating": "4.9",
     "status": "Active",
-    "updated_at": "2026-09-11"
+    "updated_at": "2026-09-12"
   },
   {
     "id": "deal-appsumo-voisstudio",
@@ -2297,7 +2297,7 @@
     "network": "AppSumo",
     "rating": "4.9",
     "status": "Active",
-    "updated_at": "2026-09-09"
+    "updated_at": "2026-09-12"
   },
   {
     "id": "deal-appsumo-snappyit",
@@ -2320,7 +2320,7 @@
     "network": "AppSumo",
     "rating": "4.9",
     "status": "Active",
-    "updated_at": "2026-09-09"
+    "updated_at": "2026-09-12"
   },
   {
     "id": "deal-appsumo-prismical",
@@ -2343,7 +2343,7 @@
     "network": "AppSumo",
     "rating": "4.9",
     "status": "Active",
-    "updated_at": "2026-09-10"
+    "updated_at": "2026-09-12"
   },
   {
     "id": "deal-appsumo-dashform",
@@ -2366,7 +2366,7 @@
     "network": "AppSumo",
     "rating": "4.9",
     "status": "Active",
-    "updated_at": "2026-09-09"
+    "updated_at": "2026-09-12"
   },
   {
     "id": "deal-appsumo-igeo",
@@ -2412,6 +2412,29 @@
     "network": "AppSumo",
     "rating": "4.9",
     "status": "Active",
-    "updated_at": "2026-09-11"
+    "updated_at": "2026-09-12"
+  },
+  {
+    "id": "deal-appsumo-sendfoxplusexclusive",
+    "title": "SendFox - Plus exclusive",
+    "name": "SendFox - Plus exclusive",
+    "description": "Schedule and automate your email growth with this affordable email marketing tool. Discover the best deal for SendFox - Plus exclusive on AppSumo today.",
+    "snippet": "Schedule and automate your email growth with this affordable email marketing tool. Discover the best deal for ...",
+    "category": "Marketing",
+    "tag": "Marketing",
+    "badge": "LIFETIME DEAL",
+    "original_price": "$480",
+    "old_price": "$480",
+    "deal_price": "$0",
+    "price": "$0",
+    "image": "https://appsumo2-cdn.appsumo.com/media/deals/images/as-web-sendfox_ISOytAA.png",
+    "icon": "https://appsumo2-cdn.appsumo.com/media/deals/images/as-web-sendfox_ISOytAA.png",
+    "affiliate_url": "https://appsumo.8odi.net/1GKLRx?u=https%3A%2F%2Fappsumo.com%2Fproducts%2Fsendfox-plus-exclusive%2F",
+    "url": "https://appsumo.8odi.net/1GKLRx?u=https%3A%2F%2Fappsumo.com%2Fproducts%2Fsendfox-plus-exclusive%2F",
+    "link": "https://appsumo.8odi.net/1GKLRx?u=https%3A%2F%2Fappsumo.com%2Fproducts%2Fsendfox-plus-exclusive%2F",
+    "network": "AppSumo",
+    "rating": "4.9",
+    "status": "Active",
+    "updated_at": "2026-09-12"
   }
 ]
