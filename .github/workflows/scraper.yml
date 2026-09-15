@@ -32,7 +32,7 @@ jobs:
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add deals.json
-          git commit -m "Auto-update live deals" || exit 0
+          git add deals.json sitemap.xml
+          git commit -m "Auto-update live deals & sitemap" || exit 0
           git pull origin main --rebase
           git push

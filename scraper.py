@@ -1,6 +1,8 @@
 import json
 import os
 import re
+import xml.etree.ElementTree as ET
+from xml.dom import minidom
 import urllib.parse
 from datetime import datetime
 import requests
@@ -8,6 +10,8 @@ from bs4 import BeautifulSoup
 
 IMPACT_BASE_LINK = "https://appsumo.8odi.net/1GKLRx"
 DEALS_JSON_PATH = "deals.json"
+SITEMAP_PATH = "sitemap.xml"
+SITE_DOMAIN = "https://novacore.deals"
 
 # AppSumo specific category endpoints to guarantee targeted deal scraping
 CATEGORY_TARGETS = {
@@ -118,7 +122,6 @@ def fetch_category_deals(cat_name, target_url, headers):
             seen_urls.add(clean_url)
             raw_deals.append((clean_title, clean_url))
 
-            # Strictly pick top 10 items per category target
             if len(raw_deals) >= 10:
                 break
 
@@ -163,7 +166,6 @@ def fetch_category_deals(cat_name, target_url, headers):
     return category_deals
 
 def load_existing_deals():
-    """Reads current deals.json file so historical deals are preserved."""
     if os.path.exists(DEALS_JSON_PATH):
         try:
             with open(DEALS_JSON_PATH, "r", encoding="utf-8") as f:
@@ -173,14 +175,52 @@ def load_existing_deals():
     return []
 
 def merge_deals(existing_deals, newly_scraped_deals):
-    """Merges new deals into existing ones without duplication."""
     deals_map = {deal["id"]: deal for deal in existing_deals}
-    
-    # Update or insert newly scraped deals at top of database
     for deal in newly_scraped_deals:
         deals_map[deal["id"]] = deal
-
     return list(deals_map.values())
+
+def generate_sitemap(deals):
+    """Automated Sitemap XML Builder for Search Engines"""
+    urlset = ET.Element("urlset", xmlns="http://www.sitemaps.org/schemas/sitemap/0.9")
+    
+    # Root domain entry
+    url_elem = ET.SubElement(urlset, "url")
+    ET.SubElement(url_elem, "loc").text = f"{SITE_DOMAIN}/"
+    ET.SubElement(url_elem, "lastmod").text = datetime.now().strftime("%Y-%m-%d")
+    ET.SubElement(url_elem, "changefreq").text = "daily"
+    ET.SubElement(url_elem, "priority").text = "1.0"
+
+    # Deal anchors entry
+    for deal in deals:
+        deal_slug = re.sub(r'[^a-zA-Z0-9]', '-', deal.get("title", "")).lower()
+        deal_url = f"{SITE_DOMAIN}/#{deal_slug}"
+        
+        u_elem = ET.SubElement(urlset, "url")
+        ET.SubElement(u_elem, "loc").text = deal_url
+        ET.SubElement(u_elem, "lastmod").text = deal.get("updated_at", datetime.now().strftime("%Y-%m-%d"))
+        ET.SubElement(u_elem, "changefreq").text = "weekly"
+        ET.SubElement(u_elem, "priority").text = "0.8"
+
+    xml_str = minidom.parseString(ET.tostring(urlset)).toprettyxml(indent="  ")
+    with open(SITEMAP_PATH, "w", encoding="utf-8") as f:
+        f.write(xml_str)
+    print(f"🗺️ Generated updated {SITEMAP_PATH} with {len(deals) + 1} URLs!")
+
+def ping_search_engines():
+    """IndexNow API ping to notify Bing & Yandex of website updates"""
+    try:
+        indexnow_url = "https://api.indexnow.org/indexnow"
+        payload = {
+            "host": "novacore.deals",
+            "key": "novacoreindexkey123",
+            "keyLocation": f"{SITE_DOMAIN}/novacoreindexkey123.txt",
+            "urlList": [f"{SITE_DOMAIN}/"]
+        }
+        res = requests.post(indexnow_url, json=payload, timeout=5)
+        print(f"⚡ IndexNow Ping Status: {res.status_code}")
+    except Exception as e:
+        print(f"⚠️ IndexNow ping skipped: {e}")
 
 def main():
     print("🚀 Running Novacore Scraper Engine with Per-Category 10-Deal Collector...")
@@ -204,6 +244,10 @@ def main():
         json.dump(final_deals_list, f, indent=2, ensure_ascii=False)
 
     print(f"✅ Exported successfully! Total Database Size: {len(final_deals_list)} deals in {DEALS_JSON_PATH}!")
+    
+    # Auto-generate Sitemap & Ping Engine
+    generate_sitemap(final_deals_list)
+    ping_search_engines()
 
 if __name__ == "__main__":
     main()
