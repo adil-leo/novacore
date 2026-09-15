@@ -15,6 +15,7 @@ SITE_DOMAIN = "https://novacore.deals"
 
 # AppSumo specific category endpoints to guarantee targeted deal scraping
 CATEGORY_TARGETS = {
+    "Freebies": "https://appsumo.com/browse/?query=free",
     "AI Tools": "https://appsumo.com/browse/?query=ai",
     "SaaS": "https://appsumo.com/browse/?query=software",
     "Marketing": "https://appsumo.com/browse/?query=marketing",
@@ -33,13 +34,16 @@ def categorize_deal(title, description="", target_category=None):
 
     text = f"{title} {description}".lower()
 
+    free_keywords = ["free", "freebie", "$0", "zero", "giveaway"]
     ai_keywords = ["ai", "gpt", "bot", "generator", "writer", "prompt", "llm", "copilot", "chat", "avatar", "transcribe", "voice"]
     marketing_keywords = ["seo", "marketing", "email", "social", "ads", "lead", "funnel", "crm", "analytics", "traffic", "copy", "rank", "outreach"]
     hosting_keywords = ["host", "hosting", "domain", "vps", "server", "cloud", "wordpress", "storage", "cdn", "dns"]
     apps_keywords = ["app", "desktop", "mobile", "ios", "android", "windows", "mac", "extension", "plugin", "software tool"]
     downloads_keywords = ["template", "course", "ebook", "pdf", "guide", "vector", "graphic", "asset", "notion", "audio", "font", "bundle", "kit", "sheet"]
 
-    if any(kw in text for kw in ai_keywords):
+    if any(kw in text for kw in free_keywords):
+        return "Freebies"
+    elif any(kw in text for kw in ai_keywords):
         return "AI Tools"
     elif any(kw in text for kw in marketing_keywords):
         return "Marketing"
@@ -56,10 +60,10 @@ def generate_reliable_logo(title):
     clean_title = urllib.parse.quote(title.strip())
     return f"https://ui-avatars.com/api/?name={clean_title}&background=0284c7&color=ffffff&bold=true&size=128"
 
-def fetch_product_details(clean_url, headers, title):
+def fetch_product_details(clean_url, headers, title, is_freebie=False):
     details = {
-        "deal_price": "$49",
-        "original_price": "$199",
+        "deal_price": "$0" if is_freebie else "$49",
+        "original_price": "$99" if is_freebie else "$199",
         "description": "",
         "image": generate_reliable_logo(title)
     }
@@ -77,11 +81,12 @@ def fetch_product_details(clean_url, headers, title):
                 details["image"] = og_img["content"]
 
             price_matches = re.findall(r"\$\d+", soup.get_text())
-            if len(price_matches) >= 2:
-                details["deal_price"] = price_matches[0]
-                details["original_price"] = price_matches[1]
-            elif len(price_matches) == 1:
-                details["deal_price"] = price_matches[0]
+            if not is_freebie:
+                if len(price_matches) >= 2:
+                    details["deal_price"] = price_matches[0]
+                    details["original_price"] = price_matches[1]
+                elif len(price_matches) == 1:
+                    details["deal_price"] = price_matches[0]
 
     except Exception as e:
         print(f"⚠️ Detail fetch skipped for {clean_url}: {e}")
@@ -127,13 +132,22 @@ def fetch_category_deals(cat_name, target_url, headers):
 
         for idx, (title, clean_url) in enumerate(raw_deals, start=1):
             print(f" 📦 [{cat_name}] [{idx}/{len(raw_deals)}]: {title}")
-            details = fetch_product_details(clean_url, headers, title)
+            is_freebie = (cat_name == "Freebies")
+            details = fetch_product_details(clean_url, headers, title, is_freebie=is_freebie)
             aff_link = wrap_affiliate_link(clean_url)
             
-            desc = details["description"] if details["description"] else f"Lifetime access offer to {title} on AppSumo."
+            desc = details["description"] if details["description"] else f"Access {title} for free on AppSumo." if is_freebie else f"Lifetime access offer to {title} on AppSumo."
             assigned_category = categorize_deal(title, desc, target_category=cat_name)
 
             deal_id = f"deal-appsumo-{re.sub(r'[^a-zA-Z0-9]', '', title).lower()}"
+
+            # Dynamic badge assignment
+            if assigned_category == "Freebies":
+                badge_text = "🎁 100% FREEBIE"
+            elif idx <= 2:
+                badge_text = "🔥 TRENDING NOW"
+            else:
+                badge_text = "LIFETIME DEAL"
 
             deal_data = {
                 "id": deal_id,
@@ -143,7 +157,7 @@ def fetch_category_deals(cat_name, target_url, headers):
                 "snippet": desc[:110] + "..." if len(desc) > 110 else desc,
                 "category": assigned_category,
                 "tag": assigned_category,
-                "badge": "🔥 TRENDING NOW" if idx <= 2 else "LIFETIME DEAL",
+                "badge": badge_text,
                 "original_price": details["original_price"],
                 "old_price": details["original_price"],
                 "deal_price": details["deal_price"],
